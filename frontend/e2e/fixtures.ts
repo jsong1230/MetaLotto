@@ -120,10 +120,10 @@ export const test = base.extend<{
       // 지갑 연결 Mock
       mockConnect: (data) => {
         const defaultData: MockWalletData = {
-          address: '0x1234567890abcdef1234567890abcdef12345678',
-          balance: '1000000000000000000000', // 1000 META
-          isConnected: true,
           ...data,
+          address: data.address ?? '0x1234567890abcdef1234567890abcdef12345678',
+          balance: data.balance ?? '1000000000000000000000', // 1000 META
+          isConnected: data.isConnected ?? true,
         };
 
         page.addInitScript((mockData) => {
