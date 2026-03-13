@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaLotto Wireframe</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: white; min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #334155; }
+        .logo { font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        nav { display: flex; gap: 24px; }
+        nav a { color: #94a3b8; text-decoration: none; }
+        nav a.active { color: white; }
+        .connect-btn { background: #8b5cf6; padding: 10px 20px; border-radius: 8px; border: none; color: white; cursor: pointer; }
+
+        /* Main */
+        main { padding: 40px 20px; }
+
+        /* Round Info Card */
+        .round-card { background: #1e293b; border-radius: 16px; padding: 32px; margin-bottom: 32px; border: 1px solid #334155; }
+        .round-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .round-status { background: #22c55e; padding: 6px 16px; border-radius: 20px; font-size: 14px; }
+        .countdown { font-size: 48px; font-weight: bold; color: #f59e0b; text-align: center; margin: 24px 0; }
+        .round-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .stat { text-align: center; }
+        .stat-value { font-size: 32px; font-weight: bold; color: #8b5cf6; }
+        .stat-label { color: #94a3b8; font-size: 14px; margin-top: 8px; }
+
+        /* Ticket Purchase */
+        .purchase-card { background: #1e293b; border-radius: 16px; padding: 32px; margin-bottom: 32px; border: 1px solid #334155; }
+        .purchase-card h2 { margin-bottom: 24px; }
+        .ticket-selector { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 24px 0; }
+        .ticket-btn { width: 48px; height: 48px; border-radius: 50%; background: #334155; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .ticket-count { font-size: 48px; font-weight: bold; min-width: 80px; text-align: center; }
+        .price-info { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 16px 24px; border-radius: 12px; margin: 24px 0; }
+        .total-price { font-size: 24px; font-weight: bold; color: #f59e0b; }
+        .buy-btn { width: 100%; background: linear-gradient(135deg, #8b5cf6, #ec4899); padding: 16px; border-radius: 12px; border: none; color: white; font-size: 18px; font-weight: bold; cursor: pointer; }
+
+        /* History */
+        .history-table { width: 100%; background: #1e293b; border-radius: 16px; overflow: hidden; border: 1px solid #334155; }
+        .history-table th, .history-table td { padding: 16px; text-align: left; border-bottom: 1px solid #334155; }
+        .history-table th { background: #0f172a; color: #94a3b8; font-weight: 500; }
+        .winner { font-family: monospace; color: #22c55e; }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+        .tab { padding: 12px 24px; background: #1e293b; border-radius: 8px; cursor: pointer; border: 1px solid #334155; }
+        .tab.active { background: #8b5cf6; border-color: #8b5cf6; }
+
+        .section-title { font-size: 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .section-title::before { content: ''; width: 4px; height: 24px; background: #8b5cf6; border-radius: 2px; }
+
+        /* Winner Banner */
+        .winner-banner { background: linear-gradient(135deg, #22c55e20, #8b5cf620); border: 1px solid #22c55e; border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 32px; }
+        .winner-banner h3 { color: #22c55e; margin-bottom: 8px; }
+        .winner-prize { font-size: 36px; font-weight: bold; color: #f59e0b; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="container">
+        <div class="logo">🎰 MetaLotto</div>
+        <nav>
+            <a href="#home" class="active">홈</a>
+            <a href="#history">히스토리</a>
+            <a href="#my-tickets">내 티켓</a>
+        </nav>
+        <button class="connect-btn">👤 지갑 연결</button>
+    </header>
+
+    <main class="container">
+        <!-- Winner Banner (Completed Round) -->
+        <div class="winner-banner">
+            <h3>🎉 라운드 #5 당첨자 발표!</h3>
+            <p style="color: #94a3b8; margin-bottom: 12px;">당첨자: <span class="winner">0x1234...5678</span></p>
+            <div class="winner-prize">9,000 META</div>
+        </div>
+
+        <!-- Round Info Card -->
+        <div class="round-card">
+            <div class="round-header">
+                <div>
+                    <h2 style="margin-bottom: 8px;">라운드 #6</h2>
+                    <p style="color: #94a3b8;">6시간마다 새로운 추첨</p>
+                </div>
+                <span class="round-status">🔵 OPEN</span>
+            </div>
+
+            <div class="countdown">05:32:18</div>
+            <p style="text-align: center; color: #94a3b8; margin-bottom: 32px;">남은 시간</p>
+
+            <div class="round-stats">
+                <div class="stat">
+                    <div class="stat-value">2,500</div>
+                    <div class="stat-label">풀 규모 (META)</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">25</div>
+                    <div class="stat-label">참여 티켓</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">100</div>
+                    <div class="stat-label">티켓 가격 (META)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticket Purchase -->
+        <div class="purchase-card">
+            <h2 class="section-title">🎫 티켓 구매</h2>
+
+            <div class="ticket-selector">
+                <button class="ticket-btn">−</button>
+                <div class="ticket-count">5</div>
+                <button class="ticket-btn">+</button>
+            </div>
+            <p style="text-align: center; color: #94a3b8;">1~100장 선택 가능</p>
+
+            <div class="price-info">
+                <span>총 가격</span>
+                <span class="total-price">500 META</span>
+            </div>
+
+            <button class="buy-btn">🎫 티켓 구매하기</button>
+        </div>
+
+        <!-- History -->
+        <h2 class="section-title">📜 라운드 히스토리</h2>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>라운드</th>
+                    <th>상태</th>
+                    <th>당첨자</th>
+                    <th>상금</th>
+                    <th>참여</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#5</td>
+                    <td><span style="background: #22c55e; padding: 4px 12px; border-radius: 12px; font-size: 12px;">완료</span></td>
+                    <td class="winner">0x1234...5678</td>
+                    <td style="color: #f59e0b; font-weight: bold;">9,000 META</td>
+                    <td>30장</td>
+                </tr>
+                <tr>
+                    <td>#4</td>
+                    <td><span style="background: #22c55e; padding: 4px 12px; border-radius: 12px; font-size: 12px;">완료</span></td>
+                    <td class="winner">0xabcd...efgh</td>
+                    <td style="color: #f59e0b; font-weight: bold;">4,500 META</td>
+                    <td>15장</td>
+                </tr>
+                <tr>
+                    <td>#3</td>
+                    <td><span style="background: #ef4444; padding: 4px 12px; border-radius: 12px; font-size: 12px;">취소</span></td>
+                    <td style="color: #94a3b8;">-</td>
+                    <td style="color: #94a3b8;">환불 완료</td>
+                    <td>1장</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 40px; color: #64748b; border-top: 1px solid #334155; margin-top: 40px;">
+        <p>© 2024 MetaLotto. All rights reserved.</p>
+        <p style="margin-top: 8px;">Powered by Metadium Blockchain</p>
+    </footer>
+
+    <!-- Wallet Modal -->
+    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;">
+        <div style="background: #1e293b; border-radius: 16px; padding: 32px; max-width: 400px; width: 100%; border: 1px solid #334155;">
+            <h3 style="margin-bottom: 24px; text-align: center;">지갑 연결</h3>
+            <button style="width: 100%; padding: 16px; background: #f6851b; border-radius: 12px; border: none; color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 12px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" width="24" height="24"> MetaMask
+            </button>
+            <button style="width: 100%; padding: 16px; background: #334155; border-radius: 12px; border: none; color: white; font-size: 16px; cursor: pointer;">
+                WalletConnect
+            </button>
+        </div>
+    </div>
+</body>
+</html>

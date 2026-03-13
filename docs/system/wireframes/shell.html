@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MetaLotto - Shell Wireframe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0F0F23;
+      --bg-secondary: rgba(255, 255, 255, 0.05);
+      --bg-card: rgba(255, 255, 255, 0.08);
+      --text-primary: #FFFFFF;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --text-tertiary: rgba(255, 255, 255, 0.6);
+      --accent-cyan: #00D9FF;
+      --accent-purple: #7C3AED;
+      --accent-yellow: #EAB308;
+      --accent-red: #FF6B6B;
+      --border-card: 1px solid rgba(255, 255, 255, 0.15);
+      --border-secondary: 2px solid rgba(255, 255, 255, 0.25);
+      --shadow-primary: 0 8px 40px rgba(0, 217, 255, 0.38);
+      --shadow-card: 0 16px 48px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00D9FF 0%, #7C3AED 100%);
+      color: #FFFFFF;
+      padding: 24px 52px;
+      border-radius: 16px;
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.4;
+      box-shadow: 0 8px 40px rgba(0, 217, 255, 0.38);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 48px rgba(0, 217, 255, 0.5);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #FFFFFF;
+      padding: 24px 52px;
+      border-radius: 16px;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.4;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .nav-tab {
+      transition: all 0.3s ease;
+    }
+
+    .nav-tab.active {
+      color: var(--accent-cyan);
+      border-bottom: 2px solid var(--accent-cyan);
+    }
+
+    .nav-tab:hover:not(.active) {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      padding: 6px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-text {
+      font-size: 12px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: 0.1875em;
+      text-transform: uppercase;
+    }
+
+    .status-open {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22C55E;
+      border: 1px solid rgba(34, 197, 94, 0.4);
+    }
+
+    .status-closing {
+      background: rgba(234, 179, 8, 0.2);
+      color: #EAB308;
+      border: 1px solid rgba(234, 179, 8, 0.4);
+    }
+
+    .status-completed {
+      background: rgba(124, 58, 237, 0.2);
+      color: #7C3AED;
+      border: 1px solid rgba(124, 58, 237, 0.4);
+    }
+
+    .mobile-nav-item {
+      transition: all 0.2s ease;
+    }
+
+    .mobile-nav-item.active {
+      color: var(--accent-cyan);
+    }
+
+    .mobile-nav-item:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Layout Toggle */
+    #layout-mobile {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      #layout-desktop {
+        display: none;
+      }
+      #layout-mobile {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Layout Toggle Buttons -->
+  <div class="fixed top-4 right-4 z-50 flex gap-2 bg-black/50 p-2 rounded-lg backdrop-blur-sm">
+    <button onclick="showLayout('desktop')" id="btn-desktop" class="px-4 py-2 rounded bg-accent-cyan text-black font-bold text-sm transition-all">
+      Desktop
+    </button>
+    <button onclick="showLayout('mobile')" id="btn-mobile" class="px-4 py-2 rounded bg-white/20 text-white font-bold text-sm transition-all hover:bg-white/30">
+      Mobile
+    </button>
+  </div>
+
+  <!-- ==================== DESKTOP LAYOUT ==================== -->
+  <div id="layout-desktop">
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-bg-primary/80 backdrop-blur-md border-b border-white/10">
+      <div class="container mx-auto px-20 max-w-[1440px]">
+        <div class="flex items-center justify-between h-20">
+          <!-- Logo -->
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+            <span class="text-2xl font-black tracking-tight text-white">MetaLotto</span>
+          </div>
+
+          <!-- Current Round Info -->
+          <div class="flex items-center gap-4">
+            <div class="text-center">
+              <div class="text-sm text-text-tertiary font-medium">Current Round</div>
+              <div class="text-xl font-bold text-white">#1234</div>
+            </div>
+            <div class="h-10 w-px bg-white/20"></div>
+            <div class="badge status-open">
+              <span class="w-2 h-2 rounded-full bg-green-500"></span>
+              <span class="badge-text">Open</span>
+            </div>
+          </div>
+
+          <!-- Wallet Connect Button -->
+          <button id="wallet-btn-desktop" class="btn-secondary text-base px-6 py-3">
+            Connect Wallet
+          </button>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex items-center justify-center gap-8 pb-0">
+          <a href="#" class="nav-tab active pb-4 text-lg font-bold" onclick="setActiveTab(this, 'desktop')">
+            Home
+          </a>
+          <a href="#" class="nav-tab pb-4 text-lg font-bold text-text-secondary" onclick="setActiveTab(this, 'desktop')">
+            History
+          </a>
+          <a href="#" class="nav-tab pb-4 text-lg font-bold text-text-secondary" onclick="setActiveTab(this, 'desktop')">
+            My Tickets
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-20 max-w-[1440px] py-12">
+      <!-- Hero Section -->
+      <section class="mb-20">
+        <div class="text-center mb-8">
+          <div class="badge inline-flex mb-6" style="background: rgba(255, 255, 255, 0.15);">
+            <span class="badge-text">Blockchain V2.0</span>
+          </div>
+          <h1 class="text-7xl font-black leading-tight mb-6" style="letter-spacing: -0.02em;">
+            블록체인 기반<br>완벽한 복권 추첨
+          </h1>
+          <p class="text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
+            METADeum 생태계에서 META 토큰로 복권 구매.<br>
+            100% 투명성 보장, 조작 불가능한 랜덤성.
+          </p>
+        </div>
+
+        <div class="flex items-center justify-center gap-5">
+          <button class="btn-primary">
+            <span class="flex items-center gap-4">
+              지금 복권 구매
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
+              </svg>
+            </span>
+          </button>
+          <button class="btn-secondary">
+            작동 방식 확인
+          </button>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="mb-20">
+        <div class="text-center mb-12">
+          <div class="text-accent-cyan text-sm font-black tracking-widest uppercase mb-5">Core Features</div>
+          <h2 class="text-5xl font-extrabold text-white mb-4">완벽한 복권 추첨 경험</h2>
+        </div>
+
+        <div class="grid grid-cols-4 gap-8">
+          <!-- Card 1 -->
+          <div class="feature-card bg-bg-card border border-white/15 rounded-3xl p-10 hover:bg-white/12 hover:-translate-y-1 transition-all duration-300 flex flex-col gap-5">
+            <div class="w-18 h-18 rounded-2xl bg-gradient-to-br from-accent-yellow to-accent-purple flex items-center justify-center">
+              <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-extrabold leading-tight text-white">6시간 라운드</h3>
+            <p class="text-lg text-text-secondary leading-normal">
+              6시간 주기로 자동 라운드 시작/종료.<br>
+              24시간 운영, 시스템 일정.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="feature-card bg-bg-card border border-white/15 rounded-3xl p-10 hover:bg-white/12 hover:-translate-y-1 transition-all duration-300 flex flex-col gap-5" style="box-shadow: 0 16px 48px rgba(0, 217, 255, 0.12);">
+            <div class="w-18 h-18 rounded-2xl bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center">
+              <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-extrabold leading-tight text-white">Blockhash 난수</h3>
+            <p class="text-lg text-text-secondary leading-normal">
+              미래 블록 해시 기반 공정 난수 생성.<br>
+              조작 불가능한 완벽한 랜덤성.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="feature-card bg-bg-card border border-white/15 rounded-3xl p-10 hover:bg-white/12 hover:-translate-y-1 transition-all duration-300 flex flex-col gap-5" style="box-shadow: 0 16px 48px rgba(124, 58, 237, 0.12);">
+            <div class="w-18 h-18 rounded-2xl bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center">
+              <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-extrabold leading-tight text-white">검증된 VRF</h3>
+            <p class="text-lg text-text-secondary leading-normal">
+              사법적 오류를 AI가 자동으로 검토하고 수정합니다.<br>
+              법인 검사 자동 완료.
+            </p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="feature-card bg-bg-card border border-white/15 rounded-3xl p-10 hover:bg-white/12 hover:-translate-y-1 transition-all duration-300 flex flex-col gap-5" style="box-shadow: 0 16px 48px rgba(255, 107, 107, 0.12);">
+            <div class="w-18 h-18 rounded-2xl bg-gradient-to-br from-accent-red to-accent-purple flex items-center justify-center">
+              <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-extrabold leading-tight text-white">자동 분배</h3>
+            <p class="text-lg text-text-secondary leading-normal">
+              당첨 시 META 토큰로 자동 전송.<br>
+              블록체인상에서 즉시 확인 가능.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Section -->
+      <section class="bg-bg-secondary rounded-3xl p-20 flex flex-col gap-14">
+        <div class="text-center">
+          <div class="text-accent-cyan text-sm font-black tracking-widest uppercase mb-4">Performance</div>
+          <h2 class="text-4xl font-extrabold text-white">완벽한 프로젝트</h2>
+        </div>
+
+        <div class="flex items-center justify-between gap-12">
+          <div class="text-center">
+            <div class="text-7xl font-black text-accent-yellow mb-3">100%</div>
+            <div class="text-base text-text-tertiary font-normal">투명성 보장</div>
+          </div>
+          <div class="text-center">
+            <div class="text-7xl font-black text-accent-cyan mb-3">24시간</div>
+            <div class="text-base text-text-tertiary font-normal">라운드 주기</div>
+          </div>
+          <div class="text-center">
+            <div class="text-7xl font-black text-accent-purple mb-3">24/7</div>
+            <div class="text-base text-text-tertiary font-normal">하루 7일</div>
+          </div>
+          <div class="text-center">
+            <div class="text-7xl font-black text-accent-red mb-3">검증된</div>
+            <div class="text-base text-text-tertiary font-normal">VRF 랜덤성</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12">
+      <div class="container mx-auto px-20 max-w-[1440px]">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+            <span class="text-lg font-bold text-white">MetaLotto</span>
+          </div>
+          <div class="flex items-center gap-8 text-sm text-text-secondary">
+            <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" class="hover:text-white transition-colors">Support</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ==================== MOBILE LAYOUT ==================== -->
+  <div id="layout-mobile">
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-bg-primary/80 backdrop-blur-md border-b border-white/10">
+      <div class="container mx-auto px-6">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+            <span class="text-xl font-black text-white">MetaLotto</span>
+          </div>
+
+          <!-- Current Round Info -->
+          <div class="flex items-center gap-2">
+            <div class="text-center">
+              <div class="text-xs text-text-tertiary font-medium">Round</div>
+              <div class="text-sm font-bold text-white">#1234</div>
+            </div>
+            <div class="badge status-open !py-1 !px-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+              <span class="badge-text !text-[10px]">Open</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 pb-24">
+      <!-- Hero Section -->
+      <section class="mb-16">
+        <div class="text-center mb-8">
+          <div class="badge inline-flex mb-4 !py-1 !px-3" style="background: rgba(255, 255, 255, 0.15);">
+            <span class="badge-text !text-[10px]">Blockchain V2.0</span>
+          </div>
+          <h1 class="text-4xl font-black leading-tight mb-4" style="letter-spacing: -0.02em;">
+            블록체인 기반<br>완벽한 복권 추첨
+          </h1>
+          <p class="text-base text-text-secondary leading-relaxed mb-6">
+            METADeum 생태계에서 META 토큰로 복권 구매.<br>
+            100% 투명성 보장.
+          </p>
+        </div>
+
+        <button class="btn-primary w-full text-lg py-4">
+          <span class="flex items-center justify-center gap-3">
+            지금 복권 구매
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
+            </svg>
+          </span>
+        </button>
+      </section>
+
+      <!-- Features Section -->
+      <section class="mb-16">
+        <div class="text-center mb-8">
+          <div class="text-accent-cyan text-xs font-black tracking-widest uppercase mb-3">Core Features</div>
+          <h2 class="text-3xl font-extrabold text-white mb-3">완벽한 복권 추첨 경험</h2>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4">
+          <!-- Card 1 -->
+          <div class="feature-card bg-bg-card border border-white/15 rounded-2xl p-6 flex items-start gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-accent-yellow to-accent-purple flex items-center justify-center flex-shrink-0">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold leading-tight text-white mb-2">6시간 라운드</h3>
+              <p class="text-sm text-text-secondary leading-normal">
+                6시간 주기로 자동 라운드 시작/종료. 24시간 운영.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="feature-card bg-bg-card border border-white/15 rounded-2xl p-6 flex items-start gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-accent-cyan to-accent-purple flex items-center justify-center flex-shrink-0">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold leading-tight text-white mb-2">Blockhash 난수</h3>
+              <p class="text-sm text-text-secondary leading-normal">
+                미래 블록 해시 기반 공정 난수 생성. 조작 불가능.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="feature-card bg-bg-card border border-white/15 rounded-2xl p-6 flex items-start gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center flex-shrink-0">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold leading-tight text-white mb-2">검증된 VRF</h3>
+              <p class="text-sm text-text-secondary leading-normal">
+                사법적 오류를 AI가 자동으로 검토하고 수정합니다.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="feature-card bg-bg-card border border-white/15 rounded-2xl p-6 flex items-start gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-accent-red to-accent-purple flex items-center justify-center flex-shrink-0">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold leading-tight text-white mb-2">자동 분배</h3>
+              <p class="text-sm text-text-secondary leading-normal">
+                당첨 시 META 토큰로 자동 전송. 즉시 확인 가능.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Section -->
+      <section class="bg-bg-secondary rounded-2xl p-8 mb-16">
+        <div class="text-center mb-6">
+          <div class="text-accent-cyan text-xs font-black tracking-widest uppercase mb-2">Performance</div>
+          <h2 class="text-2xl font-extrabold text-white">완벽한 프로젝트</h2>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6">
+          <div class="text-center">
+            <div class="text-5xl font-black text-accent-yellow mb-2">100%</div>
+            <div class="text-sm text-text-tertiary font-normal">투명성</div>
+          </div>
+          <div class="text-center">
+            <div class="text-5xl font-black text-accent-cyan mb-2">24h</div>
+            <div class="text-sm text-text-tertiary font-normal">라운드</div>
+          </div>
+          <div class="text-center">
+            <div class="text-5xl font-black text-accent-purple mb-2">24/7</div>
+            <div class="text-sm text-text-tertiary font-normal">운영</div>
+          </div>
+          <div class="text-center">
+            <div class="text-5xl font-black text-accent-red mb-2">검증</div>
+            <div class="text-sm text-text-tertiary font-normal">VRF</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-bg-primary/90 backdrop-blur-md border-t border-white/10 z-40">
+      <div class="flex items-center justify-around">
+        <a href="#" class="mobile-nav-item active flex flex-col items-center py-4 px-4">
+          <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          <span class="text-xs font-bold">Home</span>
+        </a>
+        <a href="#" class="mobile-nav-item flex flex-col items-center py-4 px-4 text-text-secondary">
+          <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span class="text-xs font-bold">History</span>
+        </a>
+        <a href="#" class="mobile-nav-item flex flex-col items-center py-4 px-4 text-text-secondary">
+          <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
+          </svg>
+          <span class="text-xs font-bold">Tickets</span>
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <script>
+    // Layout Toggle Function
+    function showLayout(layout) {
+      const desktopLayout = document.getElementById('layout-desktop');
+      const mobileLayout = document.getElementById('layout-mobile');
+      const btnDesktop = document.getElementById('btn-desktop');
+      const btnMobile = document.getElementById('btn-mobile');
+
+      if (layout === 'desktop') {
+        desktopLayout.style.display = 'block';
+        mobileLayout.style.display = 'none';
+        btnDesktop.classList.add('bg-accent-cyan', 'text-black');
+        btnDesktop.classList.remove('bg-white/20', 'text-white');
+        btnMobile.classList.remove('bg-accent-cyan', 'text-black');
+        btnMobile.classList.add('bg-white/20', 'text-white');
+      } else {
+        desktopLayout.style.display = 'none';
+        mobileLayout.style.display = 'block';
+        btnMobile.classList.add('bg-accent-cyan', 'text-black');
+        btnMobile.classList.remove('bg-white/20', 'text-white');
+        btnDesktop.classList.remove('bg-accent-cyan', 'text-black');
+        btnDesktop.classList.add('bg-white/20', 'text-white');
+      }
+    }
+
+    // Set Active Tab
+    function setActiveTab(element, layout) {
+      const navTabs = document.querySelectorAll(`#${layout}-layout .nav-tab`);
+      navTabs.forEach(tab => {
+        tab.classList.remove('active');
+        tab.classList.add('text-text-secondary');
+      });
+      element.classList.add('active');
+      element.classList.remove('text-text-secondary');
+    }
+
+    // Set Mobile Nav Active
+    function setMobileNavActive(element) {
+      const navItems = document.querySelectorAll('.mobile-nav-item');
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        item.classList.add('text-text-secondary');
+      });
+      element.classList.add('active');
+      element.classList.remove('text-text-secondary');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MetaLotto — On-Chain Lottery DApp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script>Chart.defaults.animation = false;</script>
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { interpolate-size: allow-keywords; }
+
+    /* ===== THEMES ===== */
+    html.theme-dark {
+      --bg: #06060f; --surface: #0f0f1a; --surface-hover: #1a1a2e;
+      --border: rgba(255,255,255,0.06);
+      --text: #EDEDED; --text-secondary: #888;
+      --accent: #8b5cf6; --accent-secondary: #06b6d4;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --glow: rgba(139, 92, 246, 0.15);
+      --gradient-hero: linear-gradient(135deg, #0f0326 0%, #1a0a3e 30%, #0d1b2a 70%, #06060f 100%);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: rgba(0,0,0,0.08);
+      --text: #0f172a; --text-secondary: #64748b;
+      --accent: #7c3aed; --accent-secondary: #0891b2;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --glow: rgba(124, 58, 237, 0.08);
+      --gradient-hero: linear-gradient(135deg, #f0e7ff 0%, #e0d4fc 30%, #dbeafe 70%, #FAFAF9 100%);
+    }
+
+    body {
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      transition: background 0.3s, color 0.3s;
+    }
+    h1,h2,h3,h4 { color: var(--text); letter-spacing: -0.03em; line-height: 1.1; text-wrap: balance; }
+    h1 { font-weight: 800; font-size: clamp(2.5rem, 5vw, 3.5rem); }
+    h2 { font-weight: 700; font-size: clamp(2rem, 4vw, 2.5rem); }
+    h3 { font-weight: 600; font-size: 1.5rem; }
+    p, li, span, label { color: var(--text); }
+    .text-secondary { color: var(--text-secondary); }
+
+    /* ===== NAV ===== */
+    .app-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(6,6,15,0.8); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 64px;
+    }
+    .theme-light .app-nav { background: rgba(250,250,249,0.85); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.25rem; }
+    .nav-logo svg { width: 32px; height: 32px; }
+    .nav-links { display: flex; gap: 8px; }
+    .nav-links a, .nav-links button {
+      padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500;
+      color: var(--text-secondary); text-decoration: none; border: none;
+      background: transparent; cursor: pointer; font-family: inherit;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links button:hover { color: var(--text); background: var(--surface-hover); }
+    .nav-links .active { color: var(--accent); background: var(--glow); }
+    .btn-connect {
+      padding: 8px 20px; border-radius: 10px; font-size: 14px; font-weight: 600;
+      background: var(--accent); color: white; border: none; cursor: pointer;
+      font-family: inherit; transition: all 0.2s;
+    }
+    .btn-connect:hover { filter: brightness(1.15); transform: translateY(-1px); }
+
+    /* ===== TABS ===== */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ===== HERO ===== */
+    .hero {
+      margin-top: 64px; padding: 80px 24px 60px;
+      background: var(--gradient-hero); position: relative; overflow: hidden;
+      text-align: center;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+      transform: translate(-50%, -50%); pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 100px; font-size: 13px; font-weight: 500;
+      background: var(--glow); color: var(--accent); border: 1px solid rgba(139,92,246,0.2);
+      margin-bottom: 24px;
+    }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--positive); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .hero h1 { margin-bottom: 16px; position: relative; }
+    .hero .gradient-text {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle { font-size: 1.125rem; color: var(--text-secondary); max-width: 540px; margin: 0 auto 40px; line-height: 1.7; }
+
+    /* ===== POOL CARD ===== */
+    .pool-section { padding: 0 24px; max-width: 960px; margin: -40px auto 0; position: relative; z-index: 10; }
+    .pool-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 40px; position: relative; overflow: hidden;
+    }
+    .pool-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-secondary), var(--accent));
+    }
+    .pool-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+    .pool-amount { font-size: clamp(2.5rem, 6vw, 3.5rem); font-weight: 800; letter-spacing: -0.03em; }
+    .pool-amount .meta { color: var(--accent); }
+    .pool-label { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+    .pool-round {
+      padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      background: var(--glow); color: var(--accent); border: 1px solid rgba(139,92,246,0.15);
+    }
+
+    .pool-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-item {
+      padding: 16px 20px; border-radius: 12px; background: var(--bg);
+      border: 1px solid var(--border);
+    }
+    .stat-label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .stat-value { font-size: 1.5rem; font-weight: 700; }
+
+    .countdown { display: flex; gap: 12px; justify-content: center; margin-bottom: 32px; }
+    .countdown-item {
+      text-align: center; padding: 16px 20px; border-radius: 12px;
+      background: var(--bg); border: 1px solid var(--border); min-width: 80px;
+    }
+    .countdown-num { font-size: 2rem; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .countdown-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+    /* ===== BUY SECTION ===== */
+    .buy-section { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .ticket-selector {
+      display: flex; align-items: center; gap: 0;
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+      background: var(--bg);
+    }
+    .ticket-selector button {
+      width: 44px; height: 44px; border: none; background: var(--surface-hover);
+      color: var(--text); font-size: 18px; cursor: pointer; font-weight: 600;
+      transition: background 0.15s;
+    }
+    .ticket-selector button:hover { background: var(--accent); color: white; }
+    .ticket-selector input {
+      width: 60px; height: 44px; border: none; background: transparent;
+      color: var(--text); text-align: center; font-size: 18px; font-weight: 600;
+      font-family: inherit;
+    }
+    .ticket-selector input:focus { outline: none; }
+    .btn-buy {
+      flex: 1; min-width: 200px; padding: 12px 32px; border-radius: 12px;
+      font-size: 16px; font-weight: 700; border: none; cursor: pointer;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      color: white; font-family: inherit; transition: all 0.2s;
+      box-shadow: 0 4px 16px var(--glow);
+    }
+    .btn-buy:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 8px 24px var(--glow); }
+    .buy-cost { font-size: 14px; color: var(--text-secondary); margin-top: 8px; text-align: right; width: 100%; }
+
+    /* ===== CARD GRID ===== */
+    .section-container { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+    .section-title { margin-bottom: 32px; }
+    .section-title .overline { font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 8px; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px; transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.12); }
+
+    /* ===== MY TICKETS ===== */
+    .tickets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+    .ticket-card {
+      padding: 20px 16px; border-radius: 12px; text-align: center;
+      background: var(--bg); border: 1px solid var(--border); position: relative;
+      overflow: hidden; transition: all 0.2s;
+    }
+    .ticket-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+    }
+    .ticket-card:hover { border-color: rgba(139,92,246,0.3); }
+    .ticket-num { font-size: 1.75rem; font-weight: 800; color: var(--accent); }
+    .ticket-label { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== HISTORY TABLE ===== */
+    .history-table { width: 100%; border-collapse: collapse; }
+    .history-table th {
+      text-align: left; padding: 12px 16px; font-size: 12px; font-weight: 600;
+      color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--border);
+    }
+    .history-table td {
+      padding: 16px; border-bottom: 1px solid var(--border); font-size: 14px;
+      font-variant-numeric: tabular-nums;
+    }
+    .history-table tr:hover td { background: var(--surface-hover); }
+    .address { font-family: 'Inter', monospace; font-size: 13px; color: var(--accent); }
+    .badge {
+      display: inline-flex; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600;
+    }
+    .badge-completed { background: rgba(16,185,129,0.1); color: var(--positive); }
+    .badge-open { background: var(--glow); color: var(--accent); }
+
+    /* ===== CHART SECTION ===== */
+    .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+    .chart-card { border-radius: 12px; padding: 24px; background: var(--surface); border: 1px solid var(--border); }
+    .chart-card h3 { margin-bottom: 16px; font-size: 1rem; }
+    .chart-container { position: relative; height: 300px; }
+
+    /* ===== HOW IT WORKS ===== */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; counter-reset: step; }
+    .step {
+      padding: 28px 24px; border-radius: 12px; background: var(--surface);
+      border: 1px solid var(--border); position: relative; counter-increment: step;
+    }
+    .step::before {
+      content: counter(step); position: absolute; top: -12px; left: 20px;
+      width: 28px; height: 28px; border-radius: 8px; font-size: 13px; font-weight: 700;
+      background: var(--accent); color: white; display: flex; align-items: center; justify-content: center;
+    }
+    .step h4 { margin: 8px 0 8px; font-size: 1rem; font-weight: 600; }
+    .step p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* ===== DISTRIBUTION BAR ===== */
+    .dist-bar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; margin: 16px 0; }
+    .dist-bar .winner { flex: 9; background: linear-gradient(90deg, var(--accent), var(--accent-secondary)); }
+    .dist-bar .community { flex: 0.5; background: var(--positive); }
+    .dist-bar .ops { flex: 0.5; background: var(--warning); }
+    .dist-legend { display: flex; gap: 20px; flex-wrap: wrap; }
+    .dist-legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); }
+    .dist-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ===== FOOTER ===== */
+    .app-footer {
+      padding: 40px 24px; text-align: center; font-size: 13px;
+      color: var(--text-secondary); border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+    .footer-links { display: flex; gap: 24px; justify-content: center; margin-bottom: 12px; }
+    .footer-links a { color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .animate.delay-1 { animation-delay: 0.1s; }
+    .animate.delay-2 { animation-delay: 0.2s; }
+    .animate.delay-3 { animation-delay: 0.3s; }
+    .animate.delay-4 { animation-delay: 0.4s; }
+    .animate.delay-5 { animation-delay: 0.5s; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .app-nav { padding: 0 16px; }
+      .nav-links a span.hide-mobile { display: none; }
+      .pool-card { padding: 24px; }
+      .pool-amount { font-size: 2rem; }
+      .countdown-item { min-width: 64px; padding: 12px; }
+      .countdown-num { font-size: 1.5rem; }
+      .section-container { padding: 40px 16px; }
+      .chart-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 375px) {
+      body { overflow-x: hidden; }
+      .pool-stats { grid-template-columns: 1fr 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .tickets-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+      body { background: white !important; color: black !important; }
+      .viz-menu, .app-nav { display: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .card, .pool-card { break-inside: avoid; border: 1px solid #ddd; box-shadow: none; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+    @page { margin: 0.75in; }
+
+    /* ===== MENU ===== */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text); cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--surface-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: 52px; right: 0; min-width: 200px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 8px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px);
+      transition: all 0.2s; backdrop-filter: blur(16px);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
+    .viz-menu-dropdown button {
+      width: 100%; padding: 10px 14px; border: none; border-radius: 8px;
+      background: transparent; color: var(--text); font-size: 14px;
+      font-family: inherit; cursor: pointer; text-align: left;
+      display: flex; align-items: center; gap: 10px; transition: background 0.15s;
+    }
+    .viz-menu-dropdown button:hover { background: var(--surface-hover); }
+
+    /* ===== LANG SELECTOR ===== */
+    .lang-selector { position: relative; }
+    .lang-btn {
+      padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text); cursor: pointer; font-family: inherit; transition: all 0.2s;
+    }
+    .lang-btn:hover { background: var(--surface-hover); }
+    .lang-dropdown {
+      position: absolute; top: 40px; right: 0; min-width: 140px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 6px; z-index: 200;
+      opacity: 0; visibility: hidden; transform: translateY(-6px);
+      transition: all 0.2s; backdrop-filter: blur(16px);
+    }
+    .lang-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
+    .lang-dropdown button {
+      width: 100%; padding: 8px 12px; border: none; border-radius: 6px;
+      background: transparent; color: var(--text); font-size: 13px;
+      font-family: inherit; cursor: pointer; text-align: left; transition: background 0.15s;
+    }
+    .lang-dropdown button:hover { background: var(--surface-hover); }
+
+    /* Wallet modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px; max-width: 400px; width: 90%;
+    }
+    .modal h3 { margin-bottom: 20px; }
+    .wallet-option {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px;
+      cursor: pointer; background: var(--bg); transition: all 0.2s; width: 100%;
+      font-family: inherit; font-size: 15px; font-weight: 500; color: var(--text);
+    }
+    .wallet-option:hover { border-color: var(--accent); background: var(--glow); }
+    .wallet-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:10000;padding:8px 16px;background:var(--accent);color:white;text-decoration:none;border-radius:4px;" onfocus="this.style.cssText='position:fixed;left:16px;top:16px;z-index:10000;padding:8px 16px;background:var(--accent);color:white;text-decoration:none;border-radius:4px;'" onblur="this.style.cssText='position:absolute;left:-9999px;'">Skip to content</a>
+
+  <!-- NAV -->
+  <nav class="app-nav" role="banner">
+    <div class="nav-logo">
+      <svg viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="url(#logoGrad)"/>
+        <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#8b5cf6"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
+        <path d="M16 8l6 4v8l-6 4-6-4v-8l6-4z" stroke="white" stroke-width="1.5" fill="none"/>
+        <circle cx="16" cy="16" r="3" fill="white" opacity="0.9"/>
+      </svg>
+      MetaLotto
+    </div>
+    <div class="nav-links">
+      <a href="#" class="active" onclick="switchTab('lottery',this)" data-i18n="navLottery">Lottery</a>
+      <a href="#" onclick="switchTab('mytickets',this)" data-i18n="navMyTickets"><span class="hide-mobile">My </span>Tickets</a>
+      <a href="#" onclick="switchTab('history',this)" data-i18n="navHistory">History</a>
+      <a href="#" onclick="switchTab('stats',this)" data-i18n="navStats">Stats</a>
+      <a href="#" onclick="switchTab('guide',this)" data-i18n="navGuide">Guide</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="lang-selector">
+        <button class="lang-btn" onclick="toggleLangMenu()" id="langBtn">KR</button>
+        <div class="lang-dropdown" id="langDropdown">
+          <button onclick="setLang('ko')">🇰🇷 한국어</button>
+          <button onclick="setLang('en')">🇺🇸 English</button>
+          <button onclick="setLang('zh')">🇨🇳 中文</button>
+          <button onclick="setLang('ja')">🇯🇵 日本語</button>
+        </div>
+      </div>
+      <button class="btn-connect" id="connectBtn" onclick="showWalletModal()" data-i18n="connectWallet">Connect Wallet</button>
+    </div>
+  </nav>
+
+  <!-- MENU -->
+  <div class="viz-menu" style="top:80px;">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span id="themeIcon">🌙</span><span id="themeLabel">Dark</span></button>
+      <button onclick="downloadImage()"><span>📥</span><span>Download PNG</span></button>
+      <button onclick="window.print()"><span>🖨️</span><span>Print / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main-content" role="main">
+
+    <!-- ========== TAB: LOTTERY ========== -->
+    <div class="tab-content active" id="tab-lottery">
+      <section class="hero">
+        <div class="animate">
+          <div class="hero-badge"><span class="dot"></span> Round #42 <span data-i18n="roundActive">진행 중</span></div>
+        </div>
+        <h1 class="animate delay-1"><span data-i18n="heroTitle">투명한 온체인 복권</span><br><span class="gradient-text">MetaLotto</span></h1>
+        <p class="hero-subtitle animate delay-2" data-i18n="heroSubtitle">메타디움 블록체인에서 블록해시 기반 검증 가능한 추첨.<br>누구나 결과를 확인할 수 있습니다.</p>
+      </section>
+
+      <section class="pool-section animate delay-3">
+        <div class="pool-card">
+          <div class="pool-header">
+            <div>
+              <div class="pool-amount"><span class="meta" data-count="124500" data-suffix=" META">0 META</span></div>
+              <div class="pool-label" data-i18n="currentPool">현재 라운드 상금 풀</div>
+            </div>
+            <div class="pool-round">Round #42</div>
+          </div>
+
+          <div class="countdown" id="countdown">
+            <div class="countdown-item"><div class="countdown-num" id="cd-hours">04</div><div class="countdown-label" data-i18n="hours">Hours</div></div>
+            <div class="countdown-item"><div class="countdown-num" id="cd-mins">17</div><div class="countdown-label" data-i18n="mins">Mins</div></div>
+            <div class="countdown-item"><div class="countdown-num" id="cd-secs">07</div><div class="countdown-label" data-i18n="secs">Secs</div></div>
+          </div>
+
+          <div class="pool-stats">
+            <div class="stat-item">
+              <div class="stat-label" data-i18n="participants">참여자</div>
+              <div class="stat-value">847</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label" data-i18n="totalTickets">총 티켓</div>
+              <div class="stat-value">1,245</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label" data-i18n="ticketPrice">티켓 가격</div>
+              <div class="stat-value">100 META</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label" data-i18n="myTickets">내 티켓</div>
+              <div class="stat-value" id="myTicketCount">—</div>
+            </div>
+          </div>
+
+          <div class="buy-section">
+            <div class="ticket-selector">
+              <button onclick="adjustTickets(-1)">−</button>
+              <input type="number" id="ticketInput" value="1" min="1" max="100">
+              <button onclick="adjustTickets(1)">+</button>
+            </div>
+            <button class="btn-buy" onclick="buyTickets()">
+              <span id="buyLabel" data-i18n="buyTicket">티켓 구매</span>
+            </button>
+          </div>
+          <div class="buy-cost"><span data-i18n="totalCostLabel">총 비용:</span> <strong id="totalCost">100 META</strong> (≈ <span id="totalKrw">1,400원</span>)</div>
+        </div>
+      </section>
+
+      <!-- Distribution -->
+      <section class="section-container" data-reveal>
+        <div class="section-title">
+          <div class="overline" data-i18n="prizeDistOverline">상금 분배</div>
+          <h2 data-i18n="prizeDistTitle">풀의 90%가 당첨자에게</h2>
+        </div>
+        <div class="card">
+          <div class="dist-bar">
+            <div class="winner"></div>
+            <div class="community"></div>
+            <div class="ops"></div>
+          </div>
+          <div class="dist-legend">
+            <div class="dist-legend-item"><div class="dist-dot" style="background:var(--accent)"></div> <span data-i18n="winner90">당첨자 90%</span></div>
+            <div class="dist-legend-item"><div class="dist-dot" style="background:var(--positive)"></div> <span data-i18n="community5">커뮤니티 펀드 5%</span></div>
+            <div class="dist-legend-item"><div class="dist-dot" style="background:var(--warning)"></div> <span data-i18n="ops5">운영비 5%</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- How it Works -->
+      <section class="section-container" data-reveal>
+        <div class="section-title">
+          <div class="overline">How it Works</div>
+          <h2 data-i18n="howTitle">4단계로 참여</h2>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <h4 data-i18n="step1Title">지갑 연결</h4>
+            <p data-i18n="step1Desc">MetaMask 또는 WalletConnect로 메타디움 체인에 연결합니다.</p>
+          </div>
+          <div class="step">
+            <h4 data-i18n="step2Title">티켓 구매</h4>
+            <p data-i18n="step2Desc">100 META로 티켓을 구매합니다. 여러 장 구매도 가능합니다.</p>
+          </div>
+          <div class="step">
+            <h4 data-i18n="step3Title">추첨 대기</h4>
+            <p data-i18n="step3Desc">라운드 종료 후 블록해시 기반으로 공정한 추첨이 진행됩니다.</p>
+          </div>
+          <div class="step">
+            <h4 data-i18n="step4Title">자동 수령</h4>
+            <p data-i18n="step4Desc">당첨 시 상금이 자동으로 지갑에 전송됩니다. 클레임 불필요!</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========== TAB: MY TICKETS ========== -->
+    <div class="tab-content" id="tab-mytickets">
+      <section class="section-container" style="margin-top:64px;">
+        <div class="section-title animate">
+          <div class="overline" data-i18n="myTicketsOverline">My Tickets</div>
+          <h2 data-i18n="myTicketsTitle">내 티켓 현황</h2>
+        </div>
+        <div class="card animate delay-1" style="margin-bottom:24px;">
+          <h3 style="margin-bottom:4px;">Round #42 <span class="badge badge-open" data-i18n="statusOpen">진행 중</span></h3>
+          <p class="text-secondary" style="font-size:14px;margin-bottom:20px;" data-i18n="ticketInfo42">보유 티켓 5장 · 당첨 확률 0.40%</p>
+          <div class="tickets-grid">
+            <div class="ticket-card"><div class="ticket-num">#087</div><div class="ticket-label">Ticket</div></div>
+            <div class="ticket-card"><div class="ticket-num">#312</div><div class="ticket-label">Ticket</div></div>
+            <div class="ticket-card"><div class="ticket-num">#558</div><div class="ticket-label">Ticket</div></div>
+            <div class="ticket-card"><div class="ticket-num">#741</div><div class="ticket-label">Ticket</div></div>
+            <div class="ticket-card"><div class="ticket-num">#999</div><div class="ticket-label">Ticket</div></div>
+          </div>
+        </div>
+        <div class="card animate delay-2">
+          <h3 style="margin-bottom:4px;">Round #41 <span class="badge badge-completed" data-i18n="statusCompleted">완료</span></h3>
+          <p class="text-secondary" style="font-size:14px;margin-bottom:20px;" data-i18n="ticketInfo41">보유 티켓 3장 · 미당첨</p>
+          <div class="tickets-grid">
+            <div class="ticket-card"><div class="ticket-num">#124</div><div class="ticket-label">Ticket</div></div>
+            <div class="ticket-card"><div class="ticket-num">#456</div><div class="ticket-label">Ticket</div></div>
+            <div class="ticket-card"><div class="ticket-num">#789</div><div class="ticket-label">Ticket</div></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========== TAB: HISTORY ========== -->
+    <div class="tab-content" id="tab-history">
+      <section class="section-container" style="margin-top:64px;">
+        <div class="section-title animate">
+          <div class="overline" data-i18n="historyOverline">Round History</div>
+          <h2 data-i18n="historyTitle">추첨 결과</h2>
+        </div>
+        <div class="card animate delay-1" style="overflow-x:auto;">
+          <table class="history-table">
+            <thead>
+              <tr><th>Round</th><th data-i18n="thWinner">당첨자</th><th data-i18n="thPrize">상금</th><th data-i18n="thParticipants">참여자</th><th data-i18n="thStatus">상태</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>#41</td><td class="address">0x7a3F...8b2E</td><td><strong>9,180 META</strong></td><td>1,020</td><td><span class="badge badge-completed" data-i18n="statusCompleted">완료</span></td></tr>
+              <tr><td>#40</td><td class="address">0x1cB9...4d7A</td><td><strong>7,650 META</strong></td><td>850</td><td><span class="badge badge-completed" data-i18n="statusCompleted">완료</span></td></tr>
+              <tr><td>#39</td><td class="address">0x9eD2...1f5C</td><td><strong>11,340 META</strong></td><td>1,260</td><td><span class="badge badge-completed" data-i18n="statusCompleted">완료</span></td></tr>
+              <tr><td>#38</td><td class="address">0x3bA6...7e9D</td><td><strong>5,400 META</strong></td><td>600</td><td><span class="badge badge-completed" data-i18n="statusCompleted">완료</span></td></tr>
+              <tr><td>#37</td><td class="address">0x6fC1...2a8B</td><td><strong>8,910 META</strong></td><td>990</td><td><span class="badge badge-completed" data-i18n="statusCompleted">완료</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========== TAB: STATS ========== -->
+    <div class="tab-content" id="tab-stats">
+      <section class="section-container" style="margin-top:64px;">
+        <div class="section-title animate">
+          <div class="overline" data-i18n="statsOverline">Statistics</div>
+          <h2 data-i18n="statsTitle">MetaLotto 통계</h2>
+        </div>
+        <div class="pool-stats animate delay-1" style="margin-bottom:32px;">
+          <div class="stat-item"><div class="stat-label" data-i18n="totalRounds">총 라운드</div><div class="stat-value">42</div></div>
+          <div class="stat-item"><div class="stat-label" data-i18n="totalDistributed">총 분배 상금</div><div class="stat-value">312K META</div></div>
+          <div class="stat-item"><div class="stat-label" data-i18n="communityFund">커뮤니티 펀드</div><div class="stat-value">17.3K META</div></div>
+          <div class="stat-item"><div class="stat-label" data-i18n="uniqueParticipants">고유 참여자</div><div class="stat-value">2,847</div></div>
+        </div>
+        <div class="chart-grid">
+          <div class="chart-card animate delay-2">
+            <h3 data-i18n="chartPoolSize">라운드별 풀 규모</h3>
+            <div class="chart-container" role="img" aria-label="라운드별 상금 풀 규모를 보여주는 바 차트">
+              <canvas id="poolChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card animate delay-3">
+            <h3 data-i18n="chartParticipants">일일 참여자 추이</h3>
+            <div class="chart-container" role="img" aria-label="일일 참여자 수 추이를 보여주는 라인 차트">
+              <canvas id="participantsChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========== TAB: GUIDE ========== -->
+    <div class="tab-content" id="tab-guide">
+      <section class="section-container" style="margin-top:64px;">
+        <div class="section-title animate">
+          <div class="overline" data-i18n="guideOverline">User Guide</div>
+          <h2 data-i18n="guideTitle">MetaLotto 참여 가이드</h2>
+        </div>
+
+        <!-- What is MetaLotto -->
+        <div class="card animate delay-1" style="margin-bottom:24px;">
+          <h3 data-i18n="guideWhatTitle" style="margin-bottom:12px;">MetaLotto란?</h3>
+          <p style="color:var(--text-secondary);line-height:1.8;" data-i18n="guideWhatDesc">MetaLotto는 메타디움 블록체인 위에서 운영되는 온체인 복권(래플)입니다. 모든 과정이 스마트 컨트랙트로 자동 실행되며, 추첨 결과는 블록해시를 통해 검증 가능합니다. 운영자도 결과를 조작할 수 없는 완전히 투명한 시스템입니다.</p>
+        </div>
+
+        <!-- Draw Mechanism - Visual -->
+        <div class="card animate delay-2" style="margin-bottom:24px;">
+          <h3 data-i18n="guideDrawTitle" style="margin-bottom:20px;">당첨 방식: 래플(Raffle)</h3>
+
+          <!-- Visual Flow -->
+          <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
+            <div style="flex:1;min-width:200px;padding:20px;border-radius:12px;background:var(--bg);border:1px solid var(--border);text-align:center;">
+              <div style="font-size:2.5rem;margin-bottom:8px;">🎟️</div>
+              <div style="font-weight:700;margin-bottom:4px;" data-i18n="guideFlow1Title">1. 티켓 구매</div>
+              <div style="font-size:13px;color:var(--text-secondary);" data-i18n="guideFlow1Desc">100 META로 티켓 구매 시<br>고유 번호가 자동 부여됩니다</div>
+            </div>
+            <div style="flex:1;min-width:200px;padding:20px;border-radius:12px;background:var(--bg);border:1px solid var(--border);text-align:center;">
+              <div style="font-size:2.5rem;margin-bottom:8px;">⏰</div>
+              <div style="font-weight:700;margin-bottom:4px;" data-i18n="guideFlow2Title">2. 라운드 종료</div>
+              <div style="font-size:13px;color:var(--text-secondary);" data-i18n="guideFlow2Desc">6시간마다 라운드가 종료되고<br>추첨이 시작됩니다</div>
+            </div>
+            <div style="flex:1;min-width:200px;padding:20px;border-radius:12px;background:var(--bg);border:1px solid var(--border);text-align:center;">
+              <div style="font-size:2.5rem;margin-bottom:8px;">🔗</div>
+              <div style="font-weight:700;margin-bottom:4px;" data-i18n="guideFlow3Title">3. 블록해시 추첨</div>
+              <div style="font-size:13px;color:var(--text-secondary);" data-i18n="guideFlow3Desc">미래 블록의 해시값으로<br>당첨 번호를 결정합니다</div>
+            </div>
+            <div style="flex:1;min-width:200px;padding:20px;border-radius:12px;background:var(--bg);border:1px solid var(--border);text-align:center;">
+              <div style="font-size:2.5rem;margin-bottom:8px;">🏆</div>
+              <div style="font-weight:700;margin-bottom:4px;" data-i18n="guideFlow4Title">4. 상금 수령</div>
+              <div style="font-size:13px;color:var(--text-secondary);" data-i18n="guideFlow4Desc">당첨자에게 상금이<br>자동으로 전송됩니다</div>
+            </div>
+          </div>
+
+          <!-- Key Point: Why only 1 winner -->
+          <div style="padding:20px;border-radius:12px;background:var(--glow);border:1px solid rgba(139,92,246,0.2);margin-bottom:20px;">
+            <div style="font-weight:700;color:var(--accent);margin-bottom:8px;" data-i18n="guideKeyPointTitle">💡 핵심: 번호 선택이 아닌 래플 방식</div>
+            <p style="font-size:14px;color:var(--text-secondary);line-height:1.8;" data-i18n="guideKeyPointDesc">MetaLotto는 로또처럼 번호를 선택하는 방식이 아닙니다. 티켓을 구매하면 고유한 순번(#001, #002...)이 자동 부여되고, 블록해시에서 생성된 랜덤 숫자로 당첨 티켓을 선정합니다. 수식으로 표현하면: <code style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:13px;">당첨번호 = 랜덤시드 % 총티켓수</code> — 따라서 라운드당 정확히 1개의 당첨 티켓이 결정됩니다.</p>
+          </div>
+
+          <!-- Example visualization -->
+          <div style="padding:20px;border-radius:12px;background:var(--bg);border:1px solid var(--border);">
+            <div style="font-weight:600;margin-bottom:16px;" data-i18n="guideExampleTitle">예시: 100장 중 당첨자 선정</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;" id="ticketViz">
+            </div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--text-secondary);">
+              <span>⬜ <span data-i18n="guideTicketNormal">일반 티켓</span></span>
+              <span style="color:var(--accent);">🟪 <span data-i18n="guideTicketMine">내 티켓 (5장)</span></span>
+              <span style="color:var(--positive);">🏆 <span data-i18n="guideTicketWinner">당첨 티켓</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Blockhash Explanation -->
+        <div class="card animate delay-3" style="margin-bottom:24px;">
+          <h3 data-i18n="guideBlockhashTitle" style="margin-bottom:12px;">블록해시 랜덤은 어떻게 작동하나요?</h3>
+          <div style="display:grid;gap:16px;">
+            <div style="display:flex;gap:16px;align-items:flex-start;">
+              <div style="min-width:36px;height:36px;border-radius:10px;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">1</div>
+              <div>
+                <div style="font-weight:600;" data-i18n="guideBh1Title">시드 축적</div>
+                <div style="font-size:14px;color:var(--text-secondary);line-height:1.7;" data-i18n="guideBh1Desc">티켓을 구매할 때마다 구매자 주소와 블록 정보가 시드(seed)에 누적됩니다. 이 시드는 누구도 예측할 수 없습니다.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:16px;align-items:flex-start;">
+              <div style="min-width:36px;height:36px;border-radius:10px;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">2</div>
+              <div>
+                <div style="font-weight:600;" data-i18n="guideBh2Title">미래 블록 참조</div>
+                <div style="font-size:14px;color:var(--text-secondary);line-height:1.7;" data-i18n="guideBh2Desc">라운드 종료 후 아직 생성되지 않은 미래 블록 3개의 해시값을 사용합니다. 이 값은 마이너도 조작할 수 없습니다.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:16px;align-items:flex-start;">
+              <div style="min-width:36px;height:36px;border-radius:10px;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">3</div>
+              <div>
+                <div style="font-weight:600;" data-i18n="guideBh3Title">XOR 조합</div>
+                <div style="font-size:14px;color:var(--text-secondary);line-height:1.7;" data-i18n="guideBh3Desc">3개의 블록해시와 축적된 시드를 XOR 연산으로 조합하여 최종 랜덤 값을 생성합니다. 이 과정은 컨트랙트 코드로 누구나 검증할 수 있습니다.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prize Distribution -->
+        <div class="card animate delay-4" style="margin-bottom:24px;">
+          <h3 data-i18n="guidePrizeTitle" style="margin-bottom:16px;">상금 분배 구조</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:16px;margin-bottom:20px;">
+            <div style="padding:20px;border-radius:12px;background:linear-gradient(135deg, rgba(139,92,246,0.1), rgba(6,182,212,0.1));border:1px solid rgba(139,92,246,0.2);text-align:center;">
+              <div style="font-size:2rem;font-weight:800;color:var(--accent);">90%</div>
+              <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;" data-i18n="guidePrizeWinner">당첨자에게 지급</div>
+            </div>
+            <div style="padding:20px;border-radius:12px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);text-align:center;">
+              <div style="font-size:2rem;font-weight:800;color:var(--positive);">5%</div>
+              <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;" data-i18n="guidePrizeCommunity">커뮤니티 펀드</div>
+            </div>
+            <div style="padding:20px;border-radius:12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);text-align:center;">
+              <div style="font-size:2rem;font-weight:800;color:var(--warning);">5%</div>
+              <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;" data-i18n="guidePrizeOps">운영비</div>
+            </div>
+          </div>
+          <div style="padding:16px;border-radius:10px;background:var(--bg);border:1px solid var(--border);font-size:14px;color:var(--text-secondary);line-height:1.7;">
+            <span data-i18n="guidePrizeExample">예: 참여자 500명이 각 1장씩 구매하면 총 풀은 50,000 META → 당첨자는 45,000 META (약 630,000원) 수령</span>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="card animate delay-5">
+          <h3 data-i18n="guideFaqTitle" style="margin-bottom:16px;">자주 묻는 질문</h3>
+          <div style="display:grid;gap:16px;">
+            <div style="padding:16px;border-radius:10px;background:var(--bg);border:1px solid var(--border);">
+              <div style="font-weight:600;margin-bottom:6px;" data-i18n="guideFaq1Q">Q. 당첨금은 어떻게 받나요?</div>
+              <div style="font-size:14px;color:var(--text-secondary);line-height:1.7;" data-i18n="guideFaq1A">당첨 시 스마트 컨트랙트가 자동으로 지갑에 META를 전송합니다. 별도의 클레임(청구) 절차가 필요 없습니다. 만약 전송이 실패하면 수동 인출(Withdraw) 기능을 사용할 수 있습니다.</div>
+            </div>
+            <div style="padding:16px;border-radius:10px;background:var(--bg);border:1px solid var(--border);">
+              <div style="font-weight:600;margin-bottom:6px;" data-i18n="guideFaq2Q">Q. 한 라운드에 여러 장 구매하면 유리한가요?</div>
+              <div style="font-size:14px;color:var(--text-secondary);line-height:1.7;" data-i18n="guideFaq2A">네, 티켓을 많이 살수록 당첨 확률이 높아집니다. 5장을 사면 총 1,000장 중 5장이 내 티켓이므로 0.5%의 당첨 확률을 갖습니다. 최대 100장까지 구매 가능합니다.</div>
+            </div>
+            <div style="padding:16px;border-radius:10px;background:var(--bg);border:1px solid var(--border);">
+              <div style="font-weight:600;margin-bottom:6px;" data-i18n="guideFaq3Q">Q. 추첨 결과를 조작할 수 있나요?</div>
+              <div style="font-size:14px;color:var(--text-secondary);line-height:1.7;" data-i18n="guideFaq3A">사실상 불가능합니다. 미래 블록의 해시값을 사용하기 때문에 누구도 — 운영자 포함 — 결과를 예측하거나 조작할 수 없습니다. 또한 모든 코드가 온체인에 공개되어 누구나 검증할 수 있습니다.</div>
+            </div>
+            <div style="padding:16px;border-radius:10px;background:var(--bg);border:1px solid var(--border);">
+              <div style="font-weight:600;margin-bottom:6px;" data-i18n="guideFaq4Q">Q. META 토큰은 어디서 구하나요?</div>
+              <div style="font-size:14px;color:var(--text-secondary);line-height:1.7;" data-i18n="guideFaq4A">META는 메타디움 블록체인의 네이티브 토큰입니다. 거래소에서 구매하거나 메타디움 커뮤니티 이벤트를 통해 얻을 수 있습니다. MetaMask에 메타디움 네트워크(Chain ID: 11)를 추가한 후 사용하세요.</div>
+            </div>
+            <div style="padding:16px;border-radius:10px;background:var(--bg);border:1px solid var(--border);">
+              <div style="font-weight:600;margin-bottom:6px;" data-i18n="guideFaq5Q">Q. 하루에 몇 번 추첨하나요?</div>
+              <div style="font-size:14px;color:var(--text-secondary);line-height:1.7;" data-i18n="guideFaq5A">6시간마다 1회, 하루 총 4회 추첨됩니다. 라운드가 종료되면 즉시 다음 라운드가 시작됩니다.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- WALLET MODAL -->
+  <div class="modal-overlay" id="walletModal">
+    <div class="modal">
+      <h3 data-i18n="walletConnect">지갑 연결</h3>
+      <button class="wallet-option" onclick="connectWallet('MetaMask')">
+        <div class="wallet-icon" style="background:#f6851b20;">🦊</div>
+        MetaMask
+      </button>
+      <button class="wallet-option" onclick="connectWallet('WalletConnect')">
+        <div class="wallet-icon" style="background:#3b99fc20;">🔗</div>
+        WalletConnect
+      </button>
+      <button class="wallet-option" onclick="connectWallet('Coinbase')">
+        <div class="wallet-icon" style="background:#0052ff20;">💎</div>
+        Coinbase Wallet
+      </button>
+      <button style="margin-top:12px;padding:10px;width:100%;border:none;background:transparent;color:var(--text-secondary);cursor:pointer;font-family:inherit;font-size:14px;border-radius:8px;" onclick="hideWalletModal()" data-i18n="cancel">취소</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <div class="footer-links">
+      <a href="#">Contract</a>
+      <a href="#">Docs</a>
+      <a href="#">GitHub</a>
+      <a href="#">Telegram</a>
+    </div>
+    <p data-i18n="footerText">MetaLotto v1.0 · Built on Metadium · Verifiably Fair</p>
+  </footer>
+
+  <script>
+    // === Menu ===
+    function toggleMenu() {
+      var dropdown = document.getElementById('vizMenuDropdown');
+      if (dropdown) dropdown.classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.viz-menu')) {
+        var dropdown = document.getElementById('vizMenuDropdown');
+        if (dropdown) dropdown.classList.remove('open');
+      }
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        var dropdown = document.getElementById('vizMenuDropdown');
+        if (dropdown) dropdown.classList.remove('open');
+        hideWalletModal();
+      }
+    });
+
+    // === Theme ===
+    var savedTheme = localStorage.getItem('viz-theme');
+    var currentTheme = savedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    function applyTheme(t) {
+      document.documentElement.className = 'theme-' + t;
+      document.getElementById('themeIcon').textContent = t === 'dark' ? '🌙' : '☀️';
+      document.getElementById('themeLabel').textContent = t === 'dark' ? 'Dark' : 'Light';
+      localStorage.setItem('viz-theme', t);
+      currentTheme = t;
+      if (typeof onThemeChange === 'function') onThemeChange();
+    }
+    function cycleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
+    applyTheme(currentTheme);
+
+    // === Tabs ===
+    function switchTab(tabId, el) {
+      document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+      document.getElementById('tab-' + tabId).classList.add('active');
+      document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
+      if (el) el.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Rebuild charts when stats tab shown
+      if (tabId === 'stats') { chartsBuilt = false; setTimeout(buildCharts, 100); }
+      if (tabId === 'guide') { setTimeout(buildTicketViz, 100); }
+    }
+
+    // === Ticket Controls ===
+    var ticketPrice = 100;
+    var krwPerMeta = 14;
+    function adjustTickets(delta) {
+      var input = document.getElementById('ticketInput');
+      var val = Math.max(1, Math.min(100, parseInt(input.value || 1) + delta));
+      input.value = val;
+      updateCost();
+    }
+    function updateCost() {
+      if (typeof updateCostI18n === 'function' && typeof i18n !== 'undefined') {
+        updateCostI18n();
+      } else {
+        var count = parseInt(document.getElementById('ticketInput').value) || 1;
+        var total = count * ticketPrice;
+        document.getElementById('totalCost').textContent = total.toLocaleString() + ' META';
+        document.getElementById('totalKrw').textContent = (total * krwPerMeta).toLocaleString() + '원';
+      }
+    }
+    document.getElementById('ticketInput').addEventListener('input', updateCost);
+
+    function buyTickets() {
+      if (!isConnected) { showWalletModal(); return; }
+      var count = parseInt(document.getElementById('ticketInput').value) || 1;
+      var btn = document.querySelector('.btn-buy');
+      var dict = i18n[currentLang] || i18n.ko;
+      btn.innerHTML = '<span style="display:inline-flex;align-items:center;gap:8px;">' + dict.buyProcessing + '</span>';
+      btn.style.opacity = '0.7';
+      setTimeout(function() {
+        btn.innerHTML = dict.buyDone;
+        btn.style.background = 'var(--positive)';
+        var mc = document.getElementById('myTicketCount');
+        mc.textContent = (parseInt(mc.textContent) || 0) + count;
+        setTimeout(function() {
+          btn.innerHTML = '<span id="buyLabel" data-i18n="buyTicket">' + dict.buyTicket + '</span>';
+          btn.style.background = '';
+          btn.style.opacity = '';
+        }, 1500);
+      }, 1200);
+    }
+
+    // === Wallet Modal ===
+    var isConnected = false;
+    function showWalletModal() { document.getElementById('walletModal').classList.add('show'); }
+    function hideWalletModal() { document.getElementById('walletModal').classList.remove('show'); }
+    function connectWallet(name) {
+      hideWalletModal();
+      isConnected = true;
+      var btn = document.getElementById('connectBtn');
+      btn.textContent = '0x7a3F...8b2E';
+      btn.style.background = 'var(--surface)';
+      btn.style.border = '1px solid var(--border)';
+      btn.style.color = 'var(--text)';
+      btn.onclick = null;
+      document.getElementById('myTicketCount').textContent = '5';
+    }
+    document.getElementById('walletModal').addEventListener('click', function(e) {
+      if (e.target === this) hideWalletModal();
+    });
+
+    // === Countdown Timer ===
+    var endTime = Date.now() + (4 * 3600 + 17 * 60 + 32) * 1000;
+    function updateCountdown() {
+      var remaining = Math.max(0, endTime - Date.now());
+      var h = Math.floor(remaining / 3600000);
+      var m = Math.floor((remaining % 3600000) / 60000);
+      var s = Math.floor((remaining % 60000) / 1000);
+      document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+      document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+      document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+    }
+    setInterval(updateCountdown, 1000);
+
+    // === Scroll Reveal ===
+    document.querySelectorAll('[data-reveal]').forEach(function(el) { el.classList.add('reveal'); });
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(function(el) { revealObserver.observe(el); });
+
+    // === Counter Animation ===
+    function animateCounters() {
+      document.querySelectorAll('[data-count]').forEach(function(el) {
+        if (el.dataset.counted) return;
+        el.dataset.counted = '1';
+        var target = parseFloat(el.dataset.count), prefix = el.dataset.prefix || '', suffix = el.dataset.suffix || '';
+        var start = performance.now(), duration = 1200;
+        (function tick(now) {
+          var p = Math.min((now - start) / duration, 1), eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = prefix + Math.round(target * eased).toLocaleString() + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        })(start);
+      });
+    }
+    var counterEl = document.querySelector('[data-count]');
+    if (counterEl) {
+      var cObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) { if (e.isIntersecting) { animateCounters(); cObs.disconnect(); } });
+      }, { threshold: 0.3 });
+      cObs.observe(counterEl);
+    }
+
+    // === Charts ===
+    var chartsBuilt = false;
+    function getChartColors() {
+      var s = getComputedStyle(document.documentElement);
+      return {
+        text: s.getPropertyValue('--text').trim(),
+        textSecondary: s.getPropertyValue('--text-secondary').trim(),
+        border: s.getPropertyValue('--border').trim(),
+        accent: s.getPropertyValue('--accent').trim(),
+        accentSecondary: s.getPropertyValue('--accent-secondary').trim(),
+        positive: s.getPropertyValue('--positive').trim(),
+      };
+    }
+    function resetCanvas(id) {
+      var old = document.getElementById(id);
+      if (!old) return null;
+      var parent = old.parentNode;
+      var canvas = document.createElement('canvas');
+      canvas.id = id;
+      canvas.setAttribute('role', 'img');
+      canvas.setAttribute('aria-label', old.getAttribute('aria-label') || 'Chart');
+      parent.replaceChild(canvas, old);
+      return canvas;
+    }
+
+    function buildCharts() {
+      if (chartsBuilt || typeof Chart === 'undefined') return;
+      var colors = getChartColors();
+      var isDark = document.documentElement.classList.contains('theme-dark');
+      var gridColor = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.06)';
+
+      // Pool chart
+      var poolCtx = resetCanvas('poolChart');
+      if (poolCtx) {
+        new Chart(poolCtx, {
+          type: 'bar',
+          data: {
+            labels: ['#36','#37','#38','#39','#40','#41','#42'],
+            datasets: [{
+              label: 'Pool (META)',
+              data: [6800, 9900, 6000, 12600, 8500, 10200, 12450],
+              backgroundColor: colors.accent + '33',
+              borderColor: colors.accent,
+              borderWidth: 2, borderRadius: 6,
+            }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { tooltip: { enabled: true, padding: 12, cornerRadius: 8 }, legend: { display: false } },
+            layout: { padding: 10 },
+            scales: {
+              x: { ticks: { color: colors.textSecondary, font: { size: 12 } }, grid: { display: false } },
+              y: { ticks: { color: colors.textSecondary, font: { size: 12 }, callback: function(v) { return (v/1000)+'K'; } }, grid: { color: gridColor } }
+            }
+          }
+        });
+      }
+
+      // Participants chart
+      var partCtx = resetCanvas('participantsChart');
+      if (partCtx) {
+        new Chart(partCtx, {
+          type: 'line',
+          data: {
+            labels: ['3/5','3/6','3/7','3/8','3/9','3/10','3/11','3/12'],
+            datasets: [{
+              label: '참여자',
+              data: [320, 450, 380, 520, 680, 720, 790, 847],
+              borderColor: colors.accentSecondary,
+              backgroundColor: colors.accentSecondary + '15',
+              fill: true, tension: 0.4, pointRadius: 0, pointHoverRadius: 6,
+              borderWidth: 2,
+            }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { tooltip: { enabled: true, mode: 'index', intersect: false, padding: 12, cornerRadius: 8 }, legend: { display: false } },
+            layout: { padding: 10 },
+            scales: {
+              x: { ticks: { color: colors.textSecondary, font: { size: 12 } }, grid: { display: false } },
+              y: { ticks: { color: colors.textSecondary, font: { size: 12 } }, grid: { color: gridColor } }
+            }
+          }
+        });
+      }
+      chartsBuilt = true;
+    }
+
+    function onThemeChange() { chartsBuilt = false; setTimeout(buildCharts, 100); }
+    window.addEventListener('load', function() { setTimeout(buildCharts, 200); });
+
+    // === i18n ===
+    var i18n = {
+      ko: {
+        navLottery: 'Lottery', navMyTickets: '<span class="hide-mobile">My </span>Tickets',
+        navHistory: 'History', navStats: 'Stats', navGuide: 'Guide',
+        connectWallet: '지갑 연결',
+        roundActive: '진행 중',
+        heroTitle: '투명한 온체인 복권', heroSubtitle: '메타디움 블록체인에서 블록해시 기반 검증 가능한 추첨.<br>누구나 결과를 확인할 수 있습니다.',
+        currentPool: '현재 라운드 상금 풀',
+        hours: 'Hours', mins: 'Mins', secs: 'Secs',
+        participants: '참여자', totalTickets: '총 티켓', ticketPrice: '티켓 가격', myTickets: '내 티켓',
+        buyTicket: '티켓 구매', totalCostLabel: '총 비용:',
+        prizeDistOverline: '상금 분배', prizeDistTitle: '풀의 90%가 당첨자에게',
+        winner90: '당첨자 90%', community5: '커뮤니티 펀드 5%', ops5: '운영비 5%',
+        howTitle: '4단계로 참여',
+        step1Title: '지갑 연결', step1Desc: 'MetaMask 또는 WalletConnect로 메타디움 체인에 연결합니다.',
+        step2Title: '티켓 구매', step2Desc: '100 META로 티켓을 구매합니다. 여러 장 구매도 가능합니다.',
+        step3Title: '추첨 대기', step3Desc: '라운드 종료 후 블록해시 기반으로 공정한 추첨이 진행됩니다.',
+        step4Title: '자동 수령', step4Desc: '당첨 시 상금이 자동으로 지갑에 전송됩니다. 클레임 불필요!',
+        myTicketsOverline: 'My Tickets', myTicketsTitle: '내 티켓 현황',
+        statusOpen: '진행 중', statusCompleted: '완료',
+        ticketInfo42: '보유 티켓 5장 · 당첨 확률 0.40%', ticketInfo41: '보유 티켓 3장 · 미당첨',
+        historyOverline: 'Round History', historyTitle: '추첨 결과',
+        thWinner: '당첨자', thPrize: '상금', thParticipants: '참여자', thStatus: '상태',
+        statsOverline: 'Statistics', statsTitle: 'MetaLotto 통계',
+        totalRounds: '총 라운드', totalDistributed: '총 분배 상금', communityFund: '커뮤니티 펀드', uniqueParticipants: '고유 참여자',
+        chartPoolSize: '라운드별 풀 규모', chartParticipants: '일일 참여자 추이',
+        walletConnect: '지갑 연결', cancel: '취소',
+        footerText: 'MetaLotto v1.0 · Metadium 기반 · 검증 가능한 공정성',
+        buyProcessing: '처리 중...', buyDone: '구매 완료!',
+        currencySymbol: '원', currencyRate: 14,
+        guideOverline: 'User Guide', guideTitle: 'MetaLotto 참여 가이드',
+        guideWhatTitle: 'MetaLotto란?', guideWhatDesc: 'MetaLotto는 메타디움 블록체인 위에서 운영되는 온체인 복권(래플)입니다. 모든 과정이 스마트 컨트랙트로 자동 실행되며, 추첨 결과는 블록해시를 통해 검증 가능합니다. 운영자도 결과를 조작할 수 없는 완전히 투명한 시스템입니다.',
+        guideDrawTitle: '당첨 방식: 래플(Raffle)',
+        guideFlow1Title: '1. 티켓 구매', guideFlow1Desc: '100 META로 티켓 구매 시<br>고유 번호가 자동 부여됩니다',
+        guideFlow2Title: '2. 라운드 종료', guideFlow2Desc: '6시간마다 라운드가 종료되고<br>추첨이 시작됩니다',
+        guideFlow3Title: '3. 블록해시 추첨', guideFlow3Desc: '미래 블록의 해시값으로<br>당첨 번호를 결정합니다',
+        guideFlow4Title: '4. 상금 수령', guideFlow4Desc: '당첨자에게 상금이<br>자동으로 전송됩니다',
+        guideKeyPointTitle: '💡 핵심: 번호 선택이 아닌 래플 방식',
+        guideKeyPointDesc: 'MetaLotto는 로또처럼 번호를 선택하는 방식이 아닙니다. 티켓을 구매하면 고유한 순번(#001, #002...)이 자동 부여되고, 블록해시에서 생성된 랜덤 숫자로 당첨 티켓을 선정합니다. 수식으로 표현하면: <code style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:13px;">당첨번호 = 랜덤시드 % 총티켓수</code> — 따라서 라운드당 정확히 1개의 당첨 티켓이 결정됩니다.',
+        guideExampleTitle: '예시: 100장 중 당첨자 선정',
+        guideTicketNormal: '일반 티켓', guideTicketMine: '내 티켓 (5장)', guideTicketWinner: '당첨 티켓',
+        guideBlockhashTitle: '블록해시 랜덤은 어떻게 작동하나요?',
+        guideBh1Title: '시드 축적', guideBh1Desc: '티켓을 구매할 때마다 구매자 주소와 블록 정보가 시드(seed)에 누적됩니다. 이 시드는 누구도 예측할 수 없습니다.',
+        guideBh2Title: '미래 블록 참조', guideBh2Desc: '라운드 종료 후 아직 생성되지 않은 미래 블록 3개의 해시값을 사용합니다. 이 값은 마이너도 조작할 수 없습니다.',
+        guideBh3Title: 'XOR 조합', guideBh3Desc: '3개의 블록해시와 축적된 시드를 XOR 연산으로 조합하여 최종 랜덤 값을 생성합니다. 이 과정은 컨트랙트 코드로 누구나 검증할 수 있습니다.',
+        guidePrizeTitle: '상금 분배 구조', guidePrizeWinner: '당첨자에게 지급', guidePrizeCommunity: '커뮤니티 펀드', guidePrizeOps: '운영비',
+        guidePrizeExample: '예: 참여자 500명이 각 1장씩 구매하면 총 풀은 50,000 META → 당첨자는 45,000 META (약 630,000원) 수령',
+        guideFaqTitle: '자주 묻는 질문',
+        guideFaq1Q: 'Q. 당첨금은 어떻게 받나요?', guideFaq1A: '당첨 시 스마트 컨트랙트가 자동으로 지갑에 META를 전송합니다. 별도의 클레임(청구) 절차가 필요 없습니다. 만약 전송이 실패하면 수동 인출(Withdraw) 기능을 사용할 수 있습니다.',
+        guideFaq2Q: 'Q. 한 라운드에 여러 장 구매하면 유리한가요?', guideFaq2A: '네, 티켓을 많이 살수록 당첨 확률이 높아집니다. 5장을 사면 총 1,000장 중 5장이 내 티켓이므로 0.5%의 당첨 확률을 갖습니다. 최대 100장까지 구매 가능합니다.',
+        guideFaq3Q: 'Q. 추첨 결과를 조작할 수 있나요?', guideFaq3A: '사실상 불가능합니다. 미래 블록의 해시값을 사용하기 때문에 누구도 — 운영자 포함 — 결과를 예측하거나 조작할 수 없습니다. 또한 모든 코드가 온체인에 공개되어 누구나 검증할 수 있습니다.',
+        guideFaq4Q: 'Q. META 토큰은 어디서 구하나요?', guideFaq4A: 'META는 메타디움 블록체인의 네이티브 토큰입니다. 거래소에서 구매하거나 메타디움 커뮤니티 이벤트를 통해 얻을 수 있습니다. MetaMask에 메타디움 네트워크(Chain ID: 11)를 추가한 후 사용하세요.',
+        guideFaq5Q: 'Q. 하루에 몇 번 추첨하나요?', guideFaq5A: '6시간마다 1회, 하루 총 4회 추첨됩니다. 라운드가 종료되면 즉시 다음 라운드가 시작됩니다.'
+      },
+      en: {
+        navLottery: 'Lottery', navMyTickets: '<span class="hide-mobile">My </span>Tickets',
+        navHistory: 'History', navStats: 'Stats', navGuide: 'Guide',
+        connectWallet: 'Connect Wallet',
+        roundActive: 'Active',
+        heroTitle: 'Transparent On-Chain Lottery', heroSubtitle: 'Verifiable draws powered by blockhash on Metadium blockchain.<br>Anyone can verify the results.',
+        currentPool: 'Current Round Prize Pool',
+        hours: 'Hours', mins: 'Mins', secs: 'Secs',
+        participants: 'Participants', totalTickets: 'Total Tickets', ticketPrice: 'Ticket Price', myTickets: 'My Tickets',
+        buyTicket: 'Buy Tickets', totalCostLabel: 'Total Cost:',
+        prizeDistOverline: 'Prize Distribution', prizeDistTitle: '90% of Pool Goes to the Winner',
+        winner90: 'Winner 90%', community5: 'Community Fund 5%', ops5: 'Operations 5%',
+        howTitle: 'How to Participate in 4 Steps',
+        step1Title: 'Connect Wallet', step1Desc: 'Connect to the Metadium chain via MetaMask or WalletConnect.',
+        step2Title: 'Buy Tickets', step2Desc: 'Purchase tickets for 100 META each. Bulk purchases available.',
+        step3Title: 'Wait for Draw', step3Desc: 'A fair draw is conducted based on blockhash after the round ends.',
+        step4Title: 'Auto Receive', step4Desc: 'Winnings are automatically sent to your wallet. No claim needed!',
+        myTicketsOverline: 'My Tickets', myTicketsTitle: 'My Ticket Status',
+        statusOpen: 'Active', statusCompleted: 'Completed',
+        ticketInfo42: '5 tickets held · Win chance 0.40%', ticketInfo41: '3 tickets held · Not won',
+        historyOverline: 'Round History', historyTitle: 'Draw Results',
+        thWinner: 'Winner', thPrize: 'Prize', thParticipants: 'Participants', thStatus: 'Status',
+        statsOverline: 'Statistics', statsTitle: 'MetaLotto Statistics',
+        totalRounds: 'Total Rounds', totalDistributed: 'Total Distributed', communityFund: 'Community Fund', uniqueParticipants: 'Unique Participants',
+        chartPoolSize: 'Pool Size by Round', chartParticipants: 'Daily Participants Trend',
+        walletConnect: 'Connect Wallet', cancel: 'Cancel',
+        footerText: 'MetaLotto v1.0 · Built on Metadium · Verifiably Fair',
+        buyProcessing: 'Processing...', buyDone: 'Purchase Complete!',
+        currencySymbol: '$', currencyRate: 0.011,
+        guideOverline: 'User Guide', guideTitle: 'MetaLotto Participation Guide',
+        guideWhatTitle: 'What is MetaLotto?', guideWhatDesc: 'MetaLotto is an on-chain raffle lottery running on the Metadium blockchain. Every process is automatically executed by smart contracts, and draw results are verifiable via blockhash. Even the operators cannot manipulate results — it\'s a fully transparent system.',
+        guideDrawTitle: 'How It Works: Raffle System',
+        guideFlow1Title: '1. Buy Tickets', guideFlow1Desc: 'A unique number is automatically<br>assigned when you buy a ticket for 100 META',
+        guideFlow2Title: '2. Round Ends', guideFlow2Desc: 'Rounds end every 6 hours<br>and the draw begins',
+        guideFlow3Title: '3. Blockhash Draw', guideFlow3Desc: 'The winning number is determined<br>by future block hash values',
+        guideFlow4Title: '4. Receive Prize', guideFlow4Desc: 'Prize is automatically<br>sent to the winner',
+        guideKeyPointTitle: '💡 Key: Raffle, Not Number Picking',
+        guideKeyPointDesc: 'MetaLotto is NOT like traditional lotto where you pick numbers. When you buy a ticket, a unique sequential number (#001, #002...) is auto-assigned, and the winning ticket is selected using a random number from blockhash. Formula: <code style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:13px;">winnerIndex = randomSeed % totalTickets</code> — exactly 1 winning ticket per round.',
+        guideExampleTitle: 'Example: Selecting winner from 100 tickets',
+        guideTicketNormal: 'Normal ticket', guideTicketMine: 'My tickets (5)', guideTicketWinner: 'Winning ticket',
+        guideBlockhashTitle: 'How Does Blockhash Randomness Work?',
+        guideBh1Title: 'Seed Accumulation', guideBh1Desc: 'Each ticket purchase adds the buyer\'s address and block info to an accumulated seed. This seed is unpredictable by anyone.',
+        guideBh2Title: 'Future Block Reference', guideBh2Desc: 'After the round ends, hash values from 3 future blocks are used. Even miners cannot manipulate these values.',
+        guideBh3Title: 'XOR Combination', guideBh3Desc: 'The 3 blockhashes and accumulated seed are combined via XOR to produce the final random value. This process is verifiable by anyone through the contract code.',
+        guidePrizeTitle: 'Prize Distribution', guidePrizeWinner: 'Paid to winner', guidePrizeCommunity: 'Community Fund', guidePrizeOps: 'Operations',
+        guidePrizeExample: 'Example: If 500 participants buy 1 ticket each, total pool is 50,000 META → winner receives 45,000 META (~$550)',
+        guideFaqTitle: 'Frequently Asked Questions',
+        guideFaq1Q: 'Q. How do I receive my winnings?', guideFaq1A: 'The smart contract automatically sends META to your wallet upon winning. No claim process needed. If the transfer fails, you can use the manual Withdraw function.',
+        guideFaq2Q: 'Q. Is buying multiple tickets advantageous?', guideFaq2A: 'Yes, the more tickets you buy, the higher your chance of winning. Buying 5 tickets out of 1,000 total gives you a 0.5% chance. Maximum 100 tickets per round.',
+        guideFaq3Q: 'Q. Can the draw results be manipulated?', guideFaq3A: 'Practically impossible. Future block hashes are used, so no one — including operators — can predict or manipulate results. All code is publicly deployed on-chain for verification.',
+        guideFaq4Q: 'Q. Where can I get META tokens?', guideFaq4A: 'META is the native token of the Metadium blockchain. You can purchase it from exchanges or earn through Metadium community events. Add the Metadium network (Chain ID: 11) to MetaMask to use it.',
+        guideFaq5Q: 'Q. How often are draws held?', guideFaq5A: 'Once every 6 hours, 4 times per day. A new round starts immediately after the previous one ends.'
+      },
+      zh: {
+        navLottery: '抽奖', navMyTickets: '<span class="hide-mobile">我的</span>彩票',
+        navHistory: '历史', navStats: '统计', navGuide: '指南',
+        connectWallet: '连接钱包',
+        roundActive: '进行中',
+        heroTitle: '透明的链上彩票', heroSubtitle: '在Metadium区块链上基于区块哈希的可验证抽奖。<br>任何人都可以验证结果。',
+        currentPool: '当前回合奖池',
+        hours: '时', mins: '分', secs: '秒',
+        participants: '参与者', totalTickets: '总彩票', ticketPrice: '票价', myTickets: '我的彩票',
+        buyTicket: '购买彩票', totalCostLabel: '总费用:',
+        prizeDistOverline: '奖金分配', prizeDistTitle: '奖池的90%归中奖者',
+        winner90: '中奖者 90%', community5: '社区基金 5%', ops5: '运营费 5%',
+        howTitle: '4步参与',
+        step1Title: '连接钱包', step1Desc: '通过MetaMask或WalletConnect连接到Metadium链。',
+        step2Title: '购买彩票', step2Desc: '每张100 META购买彩票。支持批量购买。',
+        step3Title: '等待开奖', step3Desc: '回合结束后基于区块哈希进行公平抽奖。',
+        step4Title: '自动领取', step4Desc: '中奖后奖金自动发送到您的钱包。无需领取！',
+        myTicketsOverline: '我的彩票', myTicketsTitle: '我的彩票状态',
+        statusOpen: '进行中', statusCompleted: '已完成',
+        ticketInfo42: '持有5张彩票 · 中奖概率 0.40%', ticketInfo41: '持有3张彩票 · 未中奖',
+        historyOverline: '回合历史', historyTitle: '开奖结果',
+        thWinner: '中奖者', thPrize: '奖金', thParticipants: '参与者', thStatus: '状态',
+        statsOverline: '统计', statsTitle: 'MetaLotto 统计',
+        totalRounds: '总回合', totalDistributed: '总分配奖金', communityFund: '社区基金', uniqueParticipants: '唯一参与者',
+        chartPoolSize: '各回合奖池规模', chartParticipants: '每日参与者趋势',
+        walletConnect: '连接钱包', cancel: '取消',
+        footerText: 'MetaLotto v1.0 · 基于Metadium · 可验证公平',
+        buyProcessing: '处理中...', buyDone: '购买完成！',
+        currencySymbol: '¥', currencyRate: 0.08,
+        guideOverline: '用户指南', guideTitle: 'MetaLotto 参与指南',
+        guideWhatTitle: '什么是MetaLotto？', guideWhatDesc: 'MetaLotto是运行在Metadium区块链上的链上彩票（抽奖）。所有流程由智能合约自动执行，抽奖结果可通过区块哈希验证。运营方也无法操纵结果——这是一个完全透明的系统。',
+        guideDrawTitle: '中奖方式：抽奖制（Raffle）',
+        guideFlow1Title: '1. 购买彩票', guideFlow1Desc: '花费100 META购买彩票时<br>自动分配唯一编号',
+        guideFlow2Title: '2. 回合结束', guideFlow2Desc: '每6小时回合结束<br>开始抽奖',
+        guideFlow3Title: '3. 区块哈希抽奖', guideFlow3Desc: '使用未来区块的哈希值<br>确定中奖号码',
+        guideFlow4Title: '4. 领取奖金', guideFlow4Desc: '奖金自动<br>发送给中奖者',
+        guideKeyPointTitle: '💡 核心：抽奖制，非选号制',
+        guideKeyPointDesc: 'MetaLotto不像传统彩票那样选择号码。购买彩票时会自动分配唯一序号（#001, #002...），通过区块哈希生成的随机数选出中奖彩票。公式：<code style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:13px;">中奖号码 = 随机种子 % 总彩票数</code> — 每回合恰好产生1张中奖彩票。',
+        guideExampleTitle: '示例：从100张彩票中选出中奖者',
+        guideTicketNormal: '普通彩票', guideTicketMine: '我的彩票（5张）', guideTicketWinner: '中奖彩票',
+        guideBlockhashTitle: '区块哈希随机是如何工作的？',
+        guideBh1Title: '种子积累', guideBh1Desc: '每次购票时，购买者地址和区块信息会累积到种子（seed）中。任何人都无法预测此种子。',
+        guideBh2Title: '引用未来区块', guideBh2Desc: '回合结束后，使用3个尚未生成的未来区块的哈希值。矿工也无法操纵这些值。',
+        guideBh3Title: 'XOR组合', guideBh3Desc: '将3个区块哈希与累积种子通过XOR运算组合，生成最终随机值。任何人都可以通过合约代码验证此过程。',
+        guidePrizeTitle: '奖金分配结构', guidePrizeWinner: '支付给中奖者', guidePrizeCommunity: '社区基金', guidePrizeOps: '运营费',
+        guidePrizeExample: '示例：500名参与者各购买1张，总奖池为50,000 META → 中奖者获得45,000 META（约¥4,000）',
+        guideFaqTitle: '常见问题',
+        guideFaq1Q: 'Q. 如何领取奖金？', guideFaq1A: '中奖时智能合约自动将META发送到您的钱包。无需单独的领取流程。如果转账失败，可以使用手动提现（Withdraw）功能。',
+        guideFaq2Q: 'Q. 购买多张彩票有优势吗？', guideFaq2A: '是的，购买越多彩票，中奖概率越高。在总计1,000张中购买5张，中奖概率为0.5%。每回合最多可购买100张。',
+        guideFaq3Q: 'Q. 抽奖结果可以被操纵吗？', guideFaq3A: '几乎不可能。因为使用的是未来区块的哈希值，包括运营方在内的任何人都无法预测或操纵结果。所有代码都在链上公开，任何人都可以验证。',
+        guideFaq4Q: 'Q. 在哪里可以获得META代币？', guideFaq4A: 'META是Metadium区块链的原生代币。可以在交易所购买或通过Metadium社区活动获得。将Metadium网络（Chain ID: 11）添加到MetaMask后即可使用。',
+        guideFaq5Q: 'Q. 每天抽奖几次？', guideFaq5A: '每6小时一次，每天共4次抽奖。前一回合结束后立即开始下一回合。'
+      },
+      ja: {
+        navLottery: 'ロトリー', navMyTickets: '<span class="hide-mobile">マイ</span>チケット',
+        navHistory: '履歴', navStats: '統計', navGuide: 'ガイド',
+        connectWallet: 'ウォレット接続',
+        roundActive: '進行中',
+        heroTitle: '透明なオンチェーン宝くじ', heroSubtitle: 'Metadiumブロックチェーン上のブロックハッシュによる検証可能な抽選。<br>誰でも結果を確認できます。',
+        currentPool: '現在のラウンド賞金プール',
+        hours: '時間', mins: '分', secs: '秒',
+        participants: '参加者', totalTickets: '総チケット', ticketPrice: 'チケット価格', myTickets: 'マイチケット',
+        buyTicket: 'チケット購入', totalCostLabel: '合計:',
+        prizeDistOverline: '賞金分配', prizeDistTitle: 'プールの90%が当選者へ',
+        winner90: '当選者 90%', community5: 'コミュニティファンド 5%', ops5: '運営費 5%',
+        howTitle: '4ステップで参加',
+        step1Title: 'ウォレット接続', step1Desc: 'MetaMaskまたはWalletConnectでMetadiumチェーンに接続します。',
+        step2Title: 'チケット購入', step2Desc: '100 METAでチケットを購入。複数枚の購入も可能です。',
+        step3Title: '抽選待ち', step3Desc: 'ラウンド終了後、ブロックハッシュによる公正な抽選が行われます。',
+        step4Title: '自動受取', step4Desc: '当選時、賞金は自動的にウォレットに送金されます。請求不要！',
+        myTicketsOverline: 'マイチケット', myTicketsTitle: 'マイチケット状況',
+        statusOpen: '進行中', statusCompleted: '完了',
+        ticketInfo42: '保有チケット5枚 · 当選確率 0.40%', ticketInfo41: '保有チケット3枚 · 未当選',
+        historyOverline: 'ラウンド履歴', historyTitle: '抽選結果',
+        thWinner: '当選者', thPrize: '賞金', thParticipants: '参加者', thStatus: 'ステータス',
+        statsOverline: '統計', statsTitle: 'MetaLotto 統計',
+        totalRounds: '総ラウンド', totalDistributed: '総分配賞金', communityFund: 'コミュニティファンド', uniqueParticipants: 'ユニーク参加者',
+        chartPoolSize: 'ラウンド別プール規模', chartParticipants: '日別参加者推移',
+        walletConnect: 'ウォレット接続', cancel: 'キャンセル',
+        footerText: 'MetaLotto v1.0 · Metadium上に構築 · 検証可能な公正性',
+        buyProcessing: '処理中...', buyDone: '購入完了！',
+        currencySymbol: '円', currencyRate: 1.7,
+        guideOverline: 'ユーザーガイド', guideTitle: 'MetaLotto 参加ガイド',
+        guideWhatTitle: 'MetaLottoとは？', guideWhatDesc: 'MetaLottoはMetadiumブロックチェーン上で運営されるオンチェーン宝くじ（ラッフル）です。すべてのプロセスはスマートコントラクトで自動実行され、抽選結果はブロックハッシュで検証可能です。運営者も結果を操作できない完全に透明なシステムです。',
+        guideDrawTitle: '当選方式：ラッフル（Raffle）',
+        guideFlow1Title: '1. チケット購入', guideFlow1Desc: '100 METAでチケット購入時<br>固有番号が自動付与されます',
+        guideFlow2Title: '2. ラウンド終了', guideFlow2Desc: '6時間ごとにラウンドが終了し<br>抽選が開始されます',
+        guideFlow3Title: '3. ブロックハッシュ抽選', guideFlow3Desc: '未来ブロックのハッシュ値で<br>当選番号を決定します',
+        guideFlow4Title: '4. 賞金受取', guideFlow4Desc: '当選者に賞金が<br>自動的に送金されます',
+        guideKeyPointTitle: '💡 ポイント：番号選択ではなくラッフル方式',
+        guideKeyPointDesc: 'MetaLottoは従来の宝くじのように番号を選ぶ方式ではありません。チケットを購入すると固有の連番（#001, #002...）が自動付与され、ブロックハッシュから生成されたランダム数で当選チケットを選定します。計算式：<code style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:13px;">当選番号 = ランダムシード % 総チケット数</code> — ラウンドごとに正確に1枚の当選チケットが決定されます。',
+        guideExampleTitle: '例：100枚から当選者を選定',
+        guideTicketNormal: '一般チケット', guideTicketMine: 'マイチケット（5枚）', guideTicketWinner: '当選チケット',
+        guideBlockhashTitle: 'ブロックハッシュランダムはどう機能しますか？',
+        guideBh1Title: 'シード蓄積', guideBh1Desc: 'チケット購入のたびに購入者アドレスとブロック情報がシード（seed）に蓄積されます。このシードは誰も予測できません。',
+        guideBh2Title: '未来ブロック参照', guideBh2Desc: 'ラウンド終了後、まだ生成されていない未来の3ブロックのハッシュ値を使用します。マイナーも操作できません。',
+        guideBh3Title: 'XOR組合せ', guideBh3Desc: '3つのブロックハッシュと蓄積されたシードをXOR演算で組み合わせ、最終ランダム値を生成します。この過程はコントラクトコードで誰でも検証できます。',
+        guidePrizeTitle: '賞金分配構造', guidePrizeWinner: '当選者に支払い', guidePrizeCommunity: 'コミュニティファンド', guidePrizeOps: '運営費',
+        guidePrizeExample: '例：参加者500人が各1枚購入した場合、総プールは50,000 META → 当選者は45,000 META（約¥76,500）を受け取り',
+        guideFaqTitle: 'よくある質問',
+        guideFaq1Q: 'Q. 当選金はどう受け取りますか？', guideFaq1A: '当選時、スマートコントラクトが自動的にウォレットにMETAを送金します。別途のクレーム（請求）手続きは不要です。送金が失敗した場合は手動引出し（Withdraw）機能を使用できます。',
+        guideFaq2Q: 'Q. 複数枚購入すると有利ですか？', guideFaq2A: 'はい、チケットを多く買うほど当選確率が上がります。総1,000枚中5枚を購入すると0.5%の当選確率になります。最大100枚まで購入可能です。',
+        guideFaq3Q: 'Q. 抽選結果は操作できますか？', guideFaq3A: '事実上不可能です。未来ブロックのハッシュ値を使用するため、運営者を含む誰も結果を予測・操作できません。すべてのコードがオンチェーンで公開され、誰でも検証できます。',
+        guideFaq4Q: 'Q. METAトークンはどこで入手できますか？', guideFaq4A: 'METAはMetadiumブロックチェーンのネイティブトークンです。取引所で購入するか、Metadiumコミュニティイベントで入手できます。MetaMaskにMetadiumネットワーク（Chain ID: 11）を追加してご利用ください。',
+        guideFaq5Q: 'Q. 1日に何回抽選しますか？', guideFaq5A: '6時間に1回、1日計4回抽選されます。ラウンド終了後すぐに次のラウンドが開始されます。'
+      }
+    };
+
+    var langLabels = { ko: 'KR', en: 'EN', zh: 'CN', ja: 'JP' };
+    var langFonts = {
+      ko: "'Noto Sans KR', 'Inter', -apple-system, sans-serif",
+      en: "'Inter', -apple-system, sans-serif",
+      zh: "'Noto Sans SC', 'Inter', -apple-system, sans-serif",
+      ja: "'Noto Sans JP', 'Inter', -apple-system, sans-serif"
+    };
+    var currentLang = localStorage.getItem('metalotto-lang') || 'ko';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('metalotto-lang', lang);
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+      document.getElementById('langBtn').textContent = langLabels[lang];
+      document.body.style.fontFamily = langFonts[lang];
+      var dict = i18n[lang];
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+      // Update cost display with correct currency
+      updateCostI18n();
+      // Close dropdown
+      document.getElementById('langDropdown').classList.remove('open');
+    }
+
+    function updateCostI18n() {
+      var dict = i18n[currentLang];
+      var count = parseInt(document.getElementById('ticketInput').value) || 1;
+      var total = count * ticketPrice;
+      document.getElementById('totalCost').textContent = total.toLocaleString() + ' META';
+      var localValue = total * dict.currencyRate;
+      if (currentLang === 'en') {
+        document.getElementById('totalKrw').textContent = '$' + localValue.toFixed(2);
+      } else {
+        document.getElementById('totalKrw').textContent = Math.round(localValue).toLocaleString() + dict.currencySymbol;
+      }
+    }
+
+    function toggleLangMenu() {
+      document.getElementById('langDropdown').classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.lang-selector')) {
+        document.getElementById('langDropdown').classList.remove('open');
+      }
+    });
+
+    // === Ticket Visualization ===
+    function buildTicketViz() {
+      var container = document.getElementById('ticketViz');
+      if (!container) return;
+      container.innerHTML = '';
+      var total = 100, myTickets = [12, 34, 56, 78, 91], winner = 34;
+      for (var i = 1; i <= total; i++) {
+        var el = document.createElement('div');
+        el.style.cssText = 'width:24px;height:24px;border-radius:4px;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:600;transition:all 0.2s;cursor:default;';
+        if (i === winner) {
+          el.style.background = 'var(--positive)'; el.style.color = 'white';
+          el.style.boxShadow = '0 0 8px rgba(16,185,129,0.5)'; el.style.transform = 'scale(1.2)';
+          el.textContent = i; el.title = (i18n[currentLang] || i18n.ko).guideTicketWinner || '당첨!';
+        } else if (myTickets.indexOf(i) >= 0) {
+          el.style.background = 'var(--accent)'; el.style.color = 'white'; el.style.opacity = '0.8';
+          el.textContent = i; el.title = (i18n[currentLang] || i18n.ko).guideTicketMine || '내 티켓';
+        } else {
+          el.style.background = 'var(--surface)'; el.style.border = '1px solid var(--border)';
+          el.style.color = 'var(--text-secondary)'; el.style.fontSize = '8px';
+          el.textContent = i;
+        }
+        container.appendChild(el);
+      }
+    }
+
+    // Apply saved language on load
+    setLang(currentLang);
+    buildTicketViz();
+
+    // === Download PNG ===
+    async function downloadImage() {
+      var menu = document.querySelector('.viz-menu');
+      menu.style.display = 'none';
+      try {
+        var url = await htmlToImage.toPng(document.body, { quality: 1, pixelRatio: 2, filter: function(n) { return !n.classList || !n.classList.contains('viz-menu'); } });
+        var a = document.createElement('a'); a.href = url;
+        a.download = 'metalotto-prototype.png'; a.click();
+      } catch(e) { console.error('Download failed:', e); }
+      menu.style.display = '';
+    }
+  </script>
+</body>
+</html>

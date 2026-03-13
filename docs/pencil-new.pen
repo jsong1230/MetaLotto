@@ -1,0 +1,1857 @@
+{
+  "version": "2.8",
+  "children": [
+    {
+      "type": "frame",
+      "id": "bi8Au",
+      "x": 0,
+      "y": 0,
+      "name": "Frame",
+      "clip": true,
+      "width": 800,
+      "height": 600,
+      "fill": "#FFFFFF",
+      "layout": "none"
+    },
+    {
+      "type": "frame",
+      "id": "Bllu5",
+      "x": 0,
+      "y": 0,
+      "name": "MetaLotto Landing Page",
+      "width": 1440,
+      "fill": "#0F0F23",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "YGDQp",
+          "name": "Hero",
+          "width": "fill_container",
+          "fill": {
+            "type": "gradient",
+            "gradientType": "linear",
+            "enabled": true,
+            "rotation": 135,
+            "size": {
+              "height": 1
+            },
+            "colors": [
+              {
+                "color": "#EAB308",
+                "position": 0.1
+              },
+              {
+                "color": "#00D9FF",
+                "position": 0.5
+              },
+              {
+                "color": "#7C3AED",
+                "position": 0.8
+              },
+              {
+                "color": "#FF6B6B",
+                "position": 1
+              }
+            ]
+          },
+          "layout": "vertical",
+          "gap": 28,
+          "padding": [
+            120,
+            80
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "i0zW0",
+              "name": "Decor1",
+              "fill": "#EAB30810",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "type": "ellipse",
+              "id": "swqzV",
+              "name": "Decor2",
+              "fill": "#00D9FF08",
+              "width": 200,
+              "height": 200
+            },
+            {
+              "type": "ellipse",
+              "id": "w6U6x",
+              "name": "Decor3",
+              "fill": "#7C3AED08",
+              "width": 150,
+              "height": 150
+            },
+            {
+              "type": "ellipse",
+              "id": "kGeKU",
+              "name": "Decor4",
+              "fill": "#FF6B6B08",
+              "width": 100,
+              "height": 100
+            },
+            {
+              "type": "frame",
+              "id": "zPkhI",
+              "name": "Badge",
+              "fill": "#ffffff26",
+              "cornerRadius": 50,
+              "stroke": {
+                "thickness": 2,
+                "fill": "#ffffff4d"
+              },
+              "gap": 12,
+              "padding": [
+                12,
+                28
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "lGggD",
+                  "name": "Badge Text",
+                  "fill": "#FFFFFF",
+                  "content": "BLOCKCHAIN V2.0",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "800",
+                  "letterSpacing": 3
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "hkxFa",
+              "name": "Headline",
+              "fill": "#FFFFFF",
+              "textGrowth": "fixed-width",
+              "width": 950,
+              "content": "블록체인 기반\n완벽한 복권 추첨",
+              "lineHeight": 1.05,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 72,
+              "fontWeight": "900"
+            },
+            {
+              "type": "text",
+              "id": "jYpdO",
+              "name": "Subhead",
+              "fill": "#FFFFFF70",
+              "textGrowth": "fixed-width",
+              "width": 700,
+              "content": "METADeum 생태계에서 META 토큰로 복권 구매.\n100% 투명성 보장, 조작 불가능한 랜덤성.",
+              "lineHeight": 1.7,
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "P1YMy",
+              "name": "CTA Row",
+              "gap": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "2dNvY",
+                  "name": "CTA Primary",
+                  "fill": {
+                    "type": "gradient",
+                    "gradientType": "linear",
+                    "enabled": true,
+                    "rotation": 135,
+                    "size": {
+                      "height": 1
+                    },
+                    "colors": [
+                      {
+                        "color": "#00D9FF",
+                        "position": 0
+                      },
+                      {
+                        "color": "#7C3AED",
+                        "position": 1
+                      }
+                    ]
+                  },
+                  "cornerRadius": 16,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#00D9FF60",
+                    "offset": {
+                      "x": 0,
+                      "y": 8
+                    },
+                    "blur": 40
+                  },
+                  "gap": 16,
+                  "padding": [
+                    24,
+                    52
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "1psUf",
+                      "name": "CTA Text",
+                      "fill": "#FFFFFF",
+                      "content": "지금 복권 구매",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "egfVK",
+                      "name": "CTA Icon",
+                      "width": 28,
+                      "height": 28,
+                      "iconFontName": "ticket",
+                      "iconFontFamily": "lucide",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "VKGOn",
+                  "name": "CTA Secondary",
+                  "cornerRadius": 16,
+                  "stroke": {
+                    "thickness": 2,
+                    "fill": "#FFFFFF40"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    24,
+                    52
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "4AqV1",
+                      "name": "CTA Text",
+                      "fill": "#FFFFFF",
+                      "content": "작동 방식 확인",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "3aORA",
+          "name": "Features",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 40,
+          "padding": [
+            100,
+            80
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "Mq45l",
+              "name": "Feat Header",
+              "layout": "vertical",
+              "gap": 20,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "APJsd",
+                  "name": "Feat Label",
+                  "fill": "#00D9FF",
+                  "content": "CORE FEATURES",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "900",
+                  "letterSpacing": 4
+                },
+                {
+                  "type": "text",
+                  "id": "s94X1",
+                  "name": "Feat Title",
+                  "fill": "#FFFFFF",
+                  "textGrowth": "fixed-width",
+                  "width": 700,
+                  "content": "완벽한 복권 추첨 경험",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 44,
+                  "fontWeight": "800"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "n3mjZ",
+              "name": "Feat Grid",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 32,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "2r8Kz",
+                  "name": "Feat Row 1",
+                  "width": "fill_container",
+                  "gap": 32,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "iSw7P",
+                      "name": "Card 1",
+                      "width": "fill_container",
+                      "fill": "#ffffff14",
+                      "cornerRadius": 24,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "#ffffff26"
+                      },
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#00000015",
+                        "offset": {
+                          "x": 0,
+                          "y": 16
+                        },
+                        "blur": 48
+                      },
+                      "layout": "vertical",
+                      "gap": 20,
+                      "padding": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "HkgLA",
+                          "name": "Card Icon",
+                          "width": 72,
+                          "height": 72,
+                          "fill": {
+                            "type": "gradient",
+                            "gradientType": "linear",
+                            "enabled": true,
+                            "rotation": 135,
+                            "size": {
+                              "height": 1
+                            },
+                            "colors": [
+                              {
+                                "color": "#EAB308",
+                                "position": 0
+                              },
+                              {
+                                "color": "#D946EF",
+                                "position": 1
+                              }
+                            ]
+                          },
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "text",
+                          "id": "FRuqA",
+                          "name": "Card Title",
+                          "fill": "#FFFFFF",
+                          "content": "6시간 라운드",
+                          "fontFamily": "Inter",
+                          "fontSize": 28,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "3soiP",
+                          "name": "Card Desc",
+                          "fill": "#FFFFFF70",
+                          "content": "6시간 주기로 자동 라운드 시작/종료.\n24시간 운영, 시스템 일정.",
+                          "lineHeight": 1.6,
+                          "fontFamily": "Inter",
+                          "fontSize": 17,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "rZsS2",
+                      "name": "Card 2",
+                      "width": "fill_container",
+                      "fill": "#ffffff14",
+                      "cornerRadius": 24,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "#ffffff26"
+                      },
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#00D9FF20",
+                        "offset": {
+                          "x": 0,
+                          "y": 16
+                        },
+                        "blur": 48
+                      },
+                      "layout": "vertical",
+                      "gap": 20,
+                      "padding": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Lh46m",
+                          "name": "Card Icon",
+                          "width": 72,
+                          "height": 72,
+                          "fill": {
+                            "type": "gradient",
+                            "gradientType": "linear",
+                            "enabled": true,
+                            "rotation": 135,
+                            "size": {
+                              "height": 1
+                            },
+                            "colors": [
+                              {
+                                "color": "#00D9FF",
+                                "position": 0
+                              },
+                              {
+                                "color": "#7C3AED",
+                                "position": 1
+                              }
+                            ]
+                          },
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "text",
+                          "id": "KUMi0",
+                          "name": "Card Title",
+                          "fill": "#FFFFFF",
+                          "content": "Blockhash 난수",
+                          "fontFamily": "Inter",
+                          "fontSize": 28,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "fc9AV",
+                          "name": "Card Desc",
+                          "fill": "#FFFFFF70",
+                          "content": "미래 블록 해시 기반 공정 난수 생성.\n조작 불가능한 완벽한 랜덤성.",
+                          "lineHeight": 1.6,
+                          "fontFamily": "Inter",
+                          "fontSize": 17,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "TjcVn",
+                  "name": "Feat Row 2",
+                  "width": "fill_container",
+                  "gap": 32,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "k6vU6",
+                      "name": "Card 3",
+                      "width": "fill_container",
+                      "fill": "#ffffff14",
+                      "cornerRadius": 24,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "#ffffff26"
+                      },
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#7C3AED20",
+                        "offset": {
+                          "x": 0,
+                          "y": 16
+                        },
+                        "blur": 48
+                      },
+                      "layout": "vertical",
+                      "gap": 20,
+                      "padding": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "35q5S",
+                          "name": "Card Icon",
+                          "width": 72,
+                          "height": 72,
+                          "fill": {
+                            "type": "gradient",
+                            "gradientType": "linear",
+                            "enabled": true,
+                            "rotation": 135,
+                            "size": {
+                              "height": 1
+                            },
+                            "colors": [
+                              {
+                                "color": "#7C3AED",
+                                "position": 0
+                              },
+                              {
+                                "color": "#2DD4BF",
+                                "position": 1
+                              }
+                            ]
+                          },
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "text",
+                          "id": "Sr1Iy",
+                          "name": "Card Title",
+                          "fill": "#FFFFFF",
+                          "content": "지능 검토",
+                          "fontFamily": "Inter",
+                          "fontSize": 28,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "nvsze",
+                          "name": "Card Desc",
+                          "fill": "#FFFFFF70",
+                          "content": "사법적 오류를 AI가 자동으로 검토하고 수정합니다.\n법인 검사 자동 완료.",
+                          "lineHeight": 1.6,
+                          "fontFamily": "Inter",
+                          "fontSize": 17,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "lut6J",
+                      "name": "Card 4",
+                      "width": "fill_container",
+                      "fill": "#ffffff14",
+                      "cornerRadius": 24,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "#ffffff26"
+                      },
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#FF6B6B20",
+                        "offset": {
+                          "x": 0,
+                          "y": 16
+                        },
+                        "blur": 48
+                      },
+                      "layout": "vertical",
+                      "gap": 20,
+                      "padding": 40,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "7lgxH",
+                          "name": "Card Icon",
+                          "width": 72,
+                          "height": 72,
+                          "fill": {
+                            "type": "gradient",
+                            "gradientType": "linear",
+                            "enabled": true,
+                            "rotation": 135,
+                            "size": {
+                              "height": 1
+                            },
+                            "colors": [
+                              {
+                                "color": "#FF6B6B",
+                                "position": 0
+                              },
+                              {
+                                "color": "#FF4D6D",
+                                "position": 1
+                              }
+                            ]
+                          },
+                          "cornerRadius": 20
+                        },
+                        {
+                          "type": "text",
+                          "id": "MRFjq",
+                          "name": "Card Title",
+                          "fill": "#FFFFFF",
+                          "content": "자동 분배",
+                          "fontFamily": "Inter",
+                          "fontSize": 28,
+                          "fontWeight": "800"
+                        },
+                        {
+                          "type": "text",
+                          "id": "ldHT2",
+                          "name": "Card Desc",
+                          "fill": "#FFFFFF70",
+                          "content": "당첨 시 META 토큰로 자동 전송.\n블록체인상에서 즉시 확인 가능.",
+                          "lineHeight": 1.6,
+                          "fontFamily": "Inter",
+                          "fontSize": 17,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "bC1hy",
+          "name": "Stats",
+          "width": "fill_container",
+          "fill": "#ffffff0d",
+          "layout": "vertical",
+          "gap": 56,
+          "padding": 80,
+          "children": [
+            {
+              "type": "frame",
+              "id": "NXzxz",
+              "name": "Stats Header",
+              "layout": "vertical",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "vR7Jm",
+                  "name": "Stats Label",
+                  "fill": "#00D9FF",
+                  "content": "PERFORMANCE",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "900",
+                  "letterSpacing": 4
+                },
+                {
+                  "type": "text",
+                  "id": "ROCTl",
+                  "name": "Stats Title",
+                  "fill": "#FFFFFF",
+                  "textGrowth": "fixed-width",
+                  "width": 500,
+                  "content": "완벽한 프로젝",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 36,
+                  "fontWeight": "800"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "2Ga3C",
+              "name": "Stats Grid",
+              "width": "fill_container",
+              "gap": 48,
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Cs4v8",
+                  "name": "Stat 1",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "jggOJ",
+                      "name": "Stat Num",
+                      "fill": "#EAB308",
+                      "content": "100%",
+                      "fontFamily": "Inter",
+                      "fontSize": 56,
+                      "fontWeight": "900"
+                    },
+                    {
+                      "type": "text",
+                      "id": "FqoZX",
+                      "name": "Stat Label",
+                      "fill": "#FFFFFF60",
+                      "content": "투명성 보장",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "82AA2",
+                  "name": "Stat 2",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ym1Ol",
+                      "name": "Stat Num",
+                      "fill": "#00D9FF",
+                      "content": "24시간",
+                      "fontFamily": "Inter",
+                      "fontSize": 56,
+                      "fontWeight": "900"
+                    },
+                    {
+                      "type": "text",
+                      "id": "CazpO",
+                      "name": "Stat Label",
+                      "fill": "#FFFFFF60",
+                      "content": "라운드 주기",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "w5wxi",
+                  "name": "Stat 3",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "L2Vgd",
+                      "name": "Stat Num",
+                      "fill": "#7C3AED",
+                      "content": "24/7",
+                      "fontFamily": "Inter",
+                      "fontSize": 56,
+                      "fontWeight": "900"
+                    },
+                    {
+                      "type": "text",
+                      "id": "vxL54",
+                      "name": "Stat Label",
+                      "fill": "#FFFFFF60",
+                      "content": "하루 7일",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "HUPKG",
+                  "name": "Stat 4",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "lLOEP",
+                      "name": "Stat Num",
+                      "fill": "#FF6B6B",
+                      "content": "검증된",
+                      "fontFamily": "Inter",
+                      "fontSize": 56,
+                      "fontWeight": "900"
+                    },
+                    {
+                      "type": "text",
+                      "id": "7Cdl4",
+                      "name": "Stat Label",
+                      "fill": "#FFFFFF60",
+                      "content": "VRF 랜덤성",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "7NlhJ",
+          "name": "CTA",
+          "width": "fill_container",
+          "fill": {
+            "type": "gradient",
+            "gradientType": "linear",
+            "enabled": true,
+            "rotation": 135,
+            "size": {
+              "height": 1
+            },
+            "colors": [
+              {
+                "color": "#FF6B6B",
+                "position": 0.2
+              },
+              {
+                "color": "#FF4D6D",
+                "position": 0.6
+              },
+              {
+                "color": "#00D9FF",
+                "position": 1
+              }
+            ]
+          },
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            100,
+            80
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "L6ORD",
+              "name": "CTA Head",
+              "layout": "vertical",
+              "gap": 20,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "TGvFu",
+                  "name": "CTA Title",
+                  "fill": "#FFFFFF",
+                  "textGrowth": "fixed-width",
+                  "width": 700,
+                  "content": "지금 바로 시작하세요",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 52,
+                  "fontWeight": "900"
+                },
+                {
+                  "type": "text",
+                  "id": "plPSJ",
+                  "name": "CTA Desc",
+                  "fill": "#FFFFFF80",
+                  "textGrowth": "fixed-width",
+                  "width": 500,
+                  "content": "첫 번째 티켓는 무료 체험. 신용카드 불필요.",
+                  "lineHeight": 1.6,
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 20,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "UeAh2",
+              "name": "CTA Button",
+              "fill": "#FFFFFF",
+              "cornerRadius": 16,
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#00000030",
+                "offset": {
+                  "x": 0,
+                  "y": 10
+                },
+                "blur": 48
+              },
+              "gap": 16,
+              "padding": [
+                24,
+                56
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "pkjlx",
+                  "name": "CTA Btn Text",
+                  "fill": "#00D9FF",
+                  "content": "무료로 시작하기",
+                  "fontFamily": "Inter",
+                  "fontSize": 22,
+                  "fontWeight": "800"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "Kym0v",
+                  "name": "CTA Btn Icon",
+                  "width": 28,
+                  "height": 28,
+                  "iconFontName": "arrow-right",
+                  "iconFontFamily": "lucide",
+                  "fill": "#00D9FF"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "wHKZZ",
+              "name": "Trust",
+              "gap": 40,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "jB60i",
+                  "name": "Trust Item",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "bXGTe",
+                      "name": "Trust Icon",
+                      "width": 24,
+                      "height": 24,
+                      "iconFontName": "shield-check",
+                      "iconFontFamily": "lucide",
+                      "fill": "#00D9FF"
+                    },
+                    {
+                      "type": "text",
+                      "id": "txz2U",
+                      "name": "Trust Text",
+                      "fill": "#FFFFFF70",
+                      "content": "스마트 컨트랙트",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "wxpL3",
+                  "name": "Trust Item",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "VhP8S",
+                      "name": "Trust Icon",
+                      "width": 24,
+                      "height": 24,
+                      "iconFontName": "clock",
+                      "iconFontFamily": "lucide",
+                      "fill": "#00D9FF"
+                    },
+                    {
+                      "type": "text",
+                      "id": "twFQ1",
+                      "name": "Trust Text",
+                      "fill": "#FFFFFF70",
+                      "content": "24/7 운영",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "JqywG",
+                  "name": "Trust Item",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "v4KeW",
+                      "name": "Trust Icon",
+                      "width": 24,
+                      "height": 24,
+                      "iconFontName": "users",
+                      "iconFontFamily": "lucide",
+                      "fill": "#00D9FF"
+                    },
+                    {
+                      "type": "text",
+                      "id": "MTzbw",
+                      "name": "Trust Text",
+                      "fill": "#FFFFFF70",
+                      "content": "100% 랜덤성",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "ibRBJ",
+      "x": 2255,
+      "y": 136,
+      "name": "Dashboard",
+      "width": 1200,
+      "fill": {
+        "type": "gradient",
+        "gradientType": "linear",
+        "enabled": true,
+        "rotation": 0,
+        "size": {
+          "height": 1
+        },
+        "colors": [
+          {
+            "color": "#0f172a",
+            "position": 0
+          },
+          {
+            "color": "#1e293b",
+            "position": 1
+          }
+        ]
+      },
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "Agr2Y",
+          "name": "dashHeader",
+          "fill": "#1e293b",
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "#000000",
+            "offset": {
+              "x": 0,
+              "y": 4
+            },
+            "blur": 12
+          },
+          "gap": 16,
+          "padding": 24,
+          "children": [
+            {
+              "type": "text",
+              "id": "mgiJw",
+              "name": "dashLogo",
+              "fill": "#ffffff",
+              "content": "MetaLotto",
+              "fontFamily": "Inter",
+              "fontSize": 28,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "Y7xaL",
+              "name": "dashWallet",
+              "fill": "#1f3f5f",
+              "gap": 8,
+              "padding": 12,
+              "children": [
+                {
+                  "type": "ellipse",
+                  "id": "ollVX",
+                  "name": "walletAvatar",
+                  "fill": "#4f46e5",
+                  "width": 40,
+                  "height": 40
+                },
+                {
+                  "type": "text",
+                  "id": "8CglH",
+                  "name": "walletAddr",
+                  "fill": "#ffffff",
+                  "content": "0x1234...5678",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "fyXjX",
+                  "name": "refreshBtn",
+                  "fill": "#4f46e5",
+                  "padding": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "YHu1Z",
+                      "name": "refreshIcon",
+                      "fill": "#ffffff",
+                      "content": "Refresh",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "dzTnj",
+          "name": "dashContent",
+          "gap": 24,
+          "padding": 24,
+          "children": [
+            {
+              "type": "frame",
+              "id": "6T3NF",
+              "name": "roundSection",
+              "width": 600,
+              "fill": "#1f293b",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "xkc0K",
+                  "name": "roundHeader",
+                  "fill": "#1f293b",
+                  "gap": 12,
+                  "padding": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uzHGA",
+                      "name": "roundBadge",
+                      "fill": "#4f46e5",
+                      "content": "Round 1247",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "x3Q5W",
+                      "name": "roundStatus",
+                      "fill": "#22c55e",
+                      "padding": 8,
+                      "children": [
+                        {
+                          "type": "ellipse",
+                          "id": "AeFQz",
+                          "name": "statusDot",
+                          "fill": "#22c55e",
+                          "width": 8,
+                          "height": 8
+                        },
+                        {
+                          "type": "text",
+                          "id": "EeFZA",
+                          "name": "statusText",
+                          "fill": "#ffffff",
+                          "content": "Selling",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "iCyS4",
+                  "name": "roundInfo",
+                  "fill": "#1f293b",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "vtq2h",
+                      "name": "infoRow",
+                      "gap": 8,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "hGOpk",
+                          "name": "infoLabel",
+                          "fill": "#94a3b8",
+                          "content": "Ticket Price",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "mhgQr",
+                          "name": "infoValue",
+                          "fill": "#ffffff",
+                          "content": "100 META",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "LiStZ",
+                      "name": "infoRow2",
+                      "gap": 8,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "64boz",
+                          "name": "infoLabel2",
+                          "fill": "#94a3b8",
+                          "content": "Time Left",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "MnEX9",
+                          "name": "infoValue2",
+                          "fill": "#fbbf24",
+                          "content": "2h 35m",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "thYv0",
+                      "name": "infoRow3",
+                      "gap": 8,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "CjPjU",
+                          "name": "infoLabel3",
+                          "fill": "#94a3b8",
+                          "content": "Total Tickets",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "UWaQT",
+                          "name": "infoValue3",
+                          "fill": "#ffffff",
+                          "content": "12,458",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "OtVID",
+                  "name": "buySection",
+                  "fill": "#1f293b",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "adzxf",
+                      "name": "buyHeader",
+                      "fill": "#ffffff",
+                      "content": "Buy Tickets",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "hj9mi",
+                      "name": "buyInput",
+                      "fill": "#0f172a",
+                      "gap": 8,
+                      "padding": 16,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "bhFcX",
+                          "name": "minusBtn",
+                          "fill": "#1f293b",
+                          "padding": 12,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "vE0y3",
+                              "name": "minusIcon",
+                              "fill": "#4f46e5",
+                              "content": "-",
+                              "fontFamily": "Inter",
+                              "fontSize": 24,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "i5uln",
+                          "name": "countInput",
+                          "width": 80,
+                          "fill": "#0f172a",
+                          "padding": 12,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "0IekI",
+                              "name": "countText",
+                              "fill": "#ffffff",
+                              "content": "10",
+                              "textAlign": "center",
+                              "fontFamily": "Inter",
+                              "fontSize": 24,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "bqgQf",
+                          "name": "plusBtn",
+                          "fill": "#1f293b",
+                          "padding": 12,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "FJIQs",
+                              "name": "plusIcon",
+                              "fill": "#4f46e5",
+                              "content": "+",
+                              "fontFamily": "Inter",
+                              "fontSize": 24,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Cc0BR",
+                      "name": "buyBtn",
+                      "fill": {
+                        "type": "gradient",
+                        "gradientType": "linear",
+                        "enabled": true,
+                        "rotation": 0,
+                        "size": {
+                          "height": 1
+                        },
+                        "colors": [
+                          {
+                            "color": "#4f46e5",
+                            "position": 0
+                          },
+                          {
+                            "color": "#7c3aed",
+                            "position": 1
+                          }
+                        ]
+                      },
+                      "padding": 16,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "gdvga",
+                          "name": "buyLabel",
+                          "fill": "#ffffff",
+                          "content": "Buy Now",
+                          "fontFamily": "Inter",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "zxVkB",
+                      "name": "costText",
+                      "fill": "#94a3b8",
+                      "content": "1000 META",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "y5C0d",
+                      "name": "limitText",
+                      "fill": "#64748b",
+                      "content": "Max 100 tickets per purchase",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "NTniw",
+              "name": "historySection",
+              "width": 540,
+              "fill": "#1f293b",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "5AjQ2",
+                  "name": "histHeader",
+                  "fill": "#ffffff",
+                  "content": "Recent Winners",
+                  "fontFamily": "Inter",
+                  "fontSize": 20,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "a5tKn",
+                  "name": "histItem",
+                  "fill": "#0f172a",
+                  "gap": 12,
+                  "padding": 16,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "M8fqG",
+                      "name": "histRound",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vI90J",
+                          "name": "histRoundNum",
+                          "fill": "#4f46e5",
+                          "content": "Round 1246",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "PKwjv",
+                          "name": "histPrize",
+                          "fill": "#fbbf24",
+                          "content": "45,230 META",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "rectangle",
+                      "id": "yb87l",
+                      "name": "histDivider",
+                      "fill": "#334155",
+                      "width": 1,
+                      "height": 40
+                    },
+                    {
+                      "type": "frame",
+                      "id": "7kHRX",
+                      "name": "histWinner",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "oP6IF",
+                          "name": "histWinnerLabel",
+                          "fill": "#94a3b8",
+                          "content": "Winner",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "mXwj3",
+                          "name": "histWinnerAddr",
+                          "fill": "#ffffff",
+                          "content": "0xabc...def",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "7tAci",
+                          "name": "histDate",
+                          "fill": "#64748b",
+                          "content": "2 hours ago",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "2S4mU",
+      "x": 1540,
+      "y": 0,
+      "name": "Login Page v2",
+      "width": 600,
+      "fill": {
+        "type": "gradient",
+        "gradientType": "linear",
+        "enabled": true,
+        "rotation": 0,
+        "size": {
+          "height": 1
+        },
+        "colors": [
+          {
+            "color": "#0f172a",
+            "position": 0
+          },
+          {
+            "color": "#4f46e5",
+            "position": 1
+          }
+        ]
+      },
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "4hOH3",
+          "name": "cardContainer",
+          "fill": "#1e293b",
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "#000000",
+            "offset": {
+              "x": 0,
+              "y": 8
+            },
+            "blur": 24
+          },
+          "layout": "vertical",
+          "gap": 32,
+          "padding": 48,
+          "children": [
+            {
+              "type": "frame",
+              "id": "vbg3Q",
+              "name": "logoArea",
+              "layout": "vertical",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "hYm7N",
+                  "name": "logoIcon",
+                  "fill": {
+                    "type": "gradient",
+                    "gradientType": "linear",
+                    "enabled": true,
+                    "rotation": 0,
+                    "size": {
+                      "height": 1
+                    },
+                    "colors": [
+                      {
+                        "color": "#4f46e5",
+                        "position": 0
+                      },
+                      {
+                        "color": "#7c3aed",
+                        "position": 1
+                      }
+                    ]
+                  },
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ONduj",
+                      "name": "logoText",
+                      "fill": "#ffffff",
+                      "content": "Meta",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 48,
+                      "fontWeight": "800"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "2V5Xp",
+                  "name": "subtitleText",
+                  "fill": "#94a3b8",
+                  "content": "Decentralized Lottery",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "whZqk",
+              "name": "descText",
+              "fill": "#cbd5e1",
+              "textGrowth": "fixed-width",
+              "width": 0,
+              "content": "Connect your wallet to purchase tickets and participate in the draw",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "ogVRH",
+              "name": "walletSection",
+              "width": "fit_content(0)",
+              "height": "fit_content(0)",
+              "layout": "vertical",
+              "gap": 16,
+              "alignItems": "center"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "yBZrR",
+      "x": 1540,
+      "y": 0,
+      "name": "Login Page v3",
+      "width": 600,
+      "fill": {
+        "type": "gradient",
+        "gradientType": "linear",
+        "enabled": true,
+        "rotation": 0,
+        "size": {
+          "height": 1
+        },
+        "colors": [
+          {
+            "color": "#0f172a",
+            "position": 0
+          },
+          {
+            "color": "#4f46e5",
+            "position": 1
+          }
+        ]
+      },
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "tv3Ev",
+          "name": "cardContainer",
+          "fill": "#1e293b",
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "#000000",
+            "offset": {
+              "x": 0,
+              "y": 8
+            },
+            "blur": 24
+          },
+          "layout": "vertical",
+          "gap": 32,
+          "padding": 48,
+          "children": [
+            {
+              "type": "frame",
+              "id": "cnUp4",
+              "name": "logoArea",
+              "layout": "vertical",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "etmMl",
+                  "name": "logoIcon",
+                  "fill": {
+                    "type": "gradient",
+                    "gradientType": "linear",
+                    "enabled": true,
+                    "rotation": 0,
+                    "size": {
+                      "height": 1
+                    },
+                    "colors": [
+                      {
+                        "color": "#4f46e5",
+                        "position": 0
+                      },
+                      {
+                        "color": "#7c3aed",
+                        "position": 1
+                      }
+                    ]
+                  },
+                  "padding": 20,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "g5V5H",
+                      "name": "logoText",
+                      "fill": "#ffffff",
+                      "content": "Meta",
+                      "textAlign": "center",
+                      "fontFamily": "Inter",
+                      "fontSize": 48,
+                      "fontWeight": "800"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "rhFRn",
+                  "name": "subtitleText",
+                  "fill": "#94a3b8",
+                  "content": "Decentralized Lottery",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "uEgHt",
+              "name": "descText",
+              "fill": "#cbd5e1",
+              "textGrowth": "fixed-width",
+              "width": 0,
+              "content": "Connect your wallet to purchase tickets and participate in the draw",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "gSSB5",
+              "name": "walletBtn",
+              "fill": {
+                "type": "gradient",
+                "gradientType": "linear",
+                "enabled": true,
+                "rotation": 0,
+                "size": {
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#4f46e5",
+                    "position": 0
+                  },
+                  {
+                    "color": "#7c3aed",
+                    "position": 1
+                  }
+                ]
+              },
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "gsG7I",
+                  "name": "walletLabel",
+                  "fill": "#ffffff",
+                  "content": "Connect Wallet",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "xk98t",
+              "name": "googleSection",
+              "gap": 8,
+              "padding": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "8C2Vl",
+                  "name": "googleLabel",
+                  "fill": "#64748b",
+                  "content": "Continue with Google",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
