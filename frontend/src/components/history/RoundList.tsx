@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRoundHistory, maskAddress, formatTimestamp } from '@/hooks/useRoundHistory';
 import { formatEther } from 'viem';
 import { RoundStatus, Round } from '@/lib/abis/types';
+import { DrawProofPanel } from '@/components/history/DrawProofPanel';
 
 /**
  * 라운드 목록 컴포넌트
@@ -34,12 +35,10 @@ export function RoundList() {
     return (
       <div className="space-y-4">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="bg-white rounded-xl border border-zinc-200 p-4 dark:bg-zinc-900 dark:border-zinc-800">
-            <div className="animate-pulse">
-              <div className="h-6 bg-zinc-200 rounded w-1/4 mb-3 dark:bg-zinc-800" />
-              <div className="h-4 bg-zinc-200 rounded w-1/2 mb-2 dark:bg-zinc-800" />
-              <div className="h-4 bg-zinc-200 rounded w-1/3 dark:bg-zinc-800" />
-            </div>
+          <div key={i} className="rounded-2xl p-4 animate-pulse" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="h-6 rounded-lg w-1/4 mb-3" style={{ background: 'rgba(255,255,255,0.1)' }} />
+            <div className="h-4 rounded-lg w-1/2 mb-2" style={{ background: 'rgba(255,255,255,0.08)' }} />
+            <div className="h-4 rounded-lg w-1/3" style={{ background: 'rgba(255,255,255,0.08)' }} />
           </div>
         ))}
       </div>
@@ -48,8 +47,8 @@ export function RoundList() {
 
   if (!rounds || rounds.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-zinc-200 p-8 text-center dark:bg-zinc-900 dark:border-zinc-800">
-        <p className="text-zinc-600 dark:text-zinc-400">아직 히스토리가 없습니다.</p>
+      <div className="rounded-2xl p-8 text-center" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+        <p style={{ color: 'rgba(255,255,255,0.5)' }}>아직 히스토리가 없습니다.</p>
       </div>
     );
   }
@@ -65,21 +64,23 @@ export function RoundList() {
 
       {/* 페이지네이션 */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between pt-4 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
           <button
             onClick={handlePreviousPage}
             disabled={!hasPreviousPage}
-            className="px-4 py-2 rounded-lg border border-zinc-300 text-zinc-700 text-sm font-medium hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="px-4 py-2 rounded-xl text-sm font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.8)' }}
           >
             이전
           </button>
-          <span className="text-sm text-zinc-600 dark:text-zinc-400">
+          <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.5)' }}>
             {page} / {totalPages}
           </span>
           <button
             onClick={handleNextPage}
             disabled={!hasNextPage}
-            className="px-4 py-2 rounded-lg border border-zinc-300 text-zinc-700 text-sm font-medium hover:bg-zinc-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="px-4 py-2 rounded-xl text-sm font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.8)' }}
           >
             다음
           </button>
@@ -93,17 +94,19 @@ export function RoundList() {
  * 라운드 카드 컴포넌트
  */
 function RoundCard({ round }: { round: Round }) {
+  const [showProof, setShowProof] = useState(false);
+  const isCompleted = round.status === RoundStatus.Completed;
   const getStatusBadge = (status: RoundStatus) => {
     switch (status) {
       case RoundStatus.Completed:
         return (
-          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold" style={{ background: 'rgba(0,217,255,0.15)', border: '1px solid rgba(0,217,255,0.3)', color: '#00D9FF' }}>
             완료
           </span>
         );
       case RoundStatus.Cancelled:
         return (
-          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold" style={{ background: 'rgba(255,107,107,0.15)', border: '1px solid rgba(255,107,107,0.3)', color: '#FF6B6B' }}>
             취소됨
           </span>
         );
@@ -113,77 +116,73 @@ function RoundCard({ round }: { round: Round }) {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-zinc-200 p-4 hover:border-zinc-300 transition-colors dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-zinc-700">
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          {/* 라운드 ID와 상태 */}
-          <div className="flex items-center gap-2 mb-3">
-            <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-              라운드 #{round.roundId.toString()}
-            </h3>
-            {getStatusBadge(round.status)}
+    <div
+      className="rounded-2xl p-5 transition-all duration-300 cursor-default"
+      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+      onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+      onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+    >
+      {/* 라운드 ID와 상태 */}
+      <div className="flex items-center gap-2 mb-4">
+        <h3 className="text-lg font-black text-white">라운드 #{round.roundId.toString()}</h3>
+        {getStatusBadge(round.status)}
+      </div>
+
+      {/* 당첨자 정보 */}
+      {round.status === RoundStatus.Completed && round.winner !== '0x0000000000000000000000000000000000000000' && (
+        <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-xl" style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.2)' }}>
+          <span>🏆</span>
+          <span className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>
+            당첨자: <span className="font-mono font-bold" style={{ color: '#EAB308' }}>{maskAddress(round.winner)}</span>
+          </span>
+        </div>
+      )}
+
+      {/* 상세 정보 */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {round.status === RoundStatus.Completed && round.winnerPrize > 0n && (
+          <div>
+            <p className="text-xs font-medium mb-1" style={{ color: 'rgba(255,255,255,0.4)' }}>당첨 금액</p>
+            <p className="text-sm font-black" style={{ color: '#EAB308' }}>{parseFloat(formatEther(round.winnerPrize)).toFixed(0)} META</p>
           </div>
-
-          {/* 당첨자 정보 (완료된 경우) */}
-          {round.status === RoundStatus.Completed && round.winner !== '0x0000000000000000000000000000000000000000' && (
-            <div className="flex items-center gap-2 mb-3">
-              <svg
-                className="w-4 h-4 text-indigo-600 dark:text-indigo-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                />
-              </svg>
-              <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                당첨자: <span className="font-mono font-medium">{maskAddress(round.winner)}</span>
-              </span>
-            </div>
-          )}
-
-          {/* 상세 정보 그리드 */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {/* 당첨 금액 */}
-            {round.status === RoundStatus.Completed && round.winnerPrize > 0n && (
-              <div>
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-1">당첨 금액</p>
-                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                  {parseFloat(formatEther(round.winnerPrize)).toFixed(2)} META
-                </p>
-              </div>
-            )}
-
-            {/* 티켓 수 */}
-            <div>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-1">참여 티켓</p>
-              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                {round.ticketCount.toString()}장
-              </p>
-            </div>
-
-            {/* 풀 규모 */}
-            <div>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-1">총 상금</p>
-              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                {parseFloat(formatEther(round.totalPool)).toFixed(2)} META
-              </p>
-            </div>
-
-            {/* 일시 */}
-            <div>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-1">일시</p>
-              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                {formatTimestamp(round.endTimestamp)}
-              </p>
-            </div>
-          </div>
+        )}
+        <div>
+          <p className="text-xs font-medium mb-1" style={{ color: 'rgba(255,255,255,0.4)' }}>참여 티켓</p>
+          <p className="text-sm font-black text-white">{round.ticketCount.toString()}장</p>
+        </div>
+        <div>
+          <p className="text-xs font-medium mb-1" style={{ color: 'rgba(255,255,255,0.4)' }}>총 상금</p>
+          <p className="text-sm font-black text-white">{parseFloat(formatEther(round.totalPool)).toFixed(0)} META</p>
+        </div>
+        <div>
+          <p className="text-xs font-medium mb-1" style={{ color: 'rgba(255,255,255,0.4)' }}>종료 일시</p>
+          <p className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.7)' }}>{formatTimestamp(round.endTimestamp)}</p>
         </div>
       </div>
+
+      {/* 추첨 검증 토글 버튼 (완료된 라운드만) */}
+      {isCompleted && (
+        <div className="mt-4 pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+          <button
+            onClick={() => setShowProof(!showProof)}
+            className="flex items-center gap-1.5 text-xs font-bold transition-all duration-200"
+            style={{ color: showProof ? '#00D9FF' : 'rgba(0,217,255,0.6)' }}
+          >
+            <span
+              className="transition-transform duration-200"
+              style={{ display: 'inline-block', transform: showProof ? 'rotate(90deg)' : 'rotate(0deg)' }}
+            >
+              ▶
+            </span>
+            {showProof ? '접기' : '추첨 검증'}
+          </button>
+
+          {/* DrawProofPanel */}
+          {showProof && (
+            <DrawProofPanel round={round} winner={round.winner} />
+          )}
+        </div>
+      )}
     </div>
   );
 }

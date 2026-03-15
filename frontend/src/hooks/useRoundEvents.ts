@@ -12,9 +12,9 @@
 
 'use client';
 
-import { useWatchContractEvent } from 'wagmi';
+import { useWatchContractEvent, useChainId } from 'wagmi';
 import { useQueryClient } from '@tanstack/react-query';
-import { metalottoContract } from '@/lib/abis/config';
+import { getMetalottoContract } from '@/lib/abis/config';
 
 /**
  * 쿼리 키 컨벤션
@@ -43,10 +43,13 @@ export const QUERY_KEYS = {
  */
 export function useRoundEvents() {
   const queryClient = useQueryClient();
+  const chainId = useChainId();
+  let contract: { address: `0x${string}`; abi: typeof import('@/lib/abis/types').META_LOTTO_ABI };
+  try { contract = getMetalottoContract(chainId); } catch { contract = getMetalottoContract(11); }
 
   // 티켓 구매 이벤트 → 라운드 정보, 내 티켓 갱신
   useWatchContractEvent({
-    ...metalottoContract,
+    ...contract,
     eventName: 'TicketPurchased',
     onLogs: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.currentRound });
@@ -57,7 +60,7 @@ export function useRoundEvents() {
 
   // 당첨자 발표 이벤트 → 전체 갱신
   useWatchContractEvent({
-    ...metalottoContract,
+    ...contract,
     eventName: 'WinnerDrawn',
     onLogs: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.currentRound });
@@ -68,7 +71,7 @@ export function useRoundEvents() {
 
   // 라운드 시작 이벤트 → 라운드 정보 갱신
   useWatchContractEvent({
-    ...metalottoContract,
+    ...contract,
     eventName: 'RoundStarted',
     onLogs: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.currentRound });
@@ -77,7 +80,7 @@ export function useRoundEvents() {
 
   // 환불 청구 이벤트 → 미수령 상금 갱신
   useWatchContractEvent({
-    ...metalottoContract,
+    ...contract,
     eventName: 'RefundClaimed',
     onLogs: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.pendingWithdrawal });
@@ -86,7 +89,7 @@ export function useRoundEvents() {
 
   // 상금 인출 이벤트 → 미수령 상금 갱신
   useWatchContractEvent({
-    ...metalottoContract,
+    ...contract,
     eventName: 'WithdrawalClaimed',
     onLogs: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.pendingWithdrawal });

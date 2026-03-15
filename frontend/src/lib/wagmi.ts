@@ -33,7 +33,7 @@ export const metadium = {
 
 // Metadium Testnet Chain Configuration
 export const metadiumTestnet = {
-  id: 511,
+  id: 12,
   name: 'Metadium Testnet',
   nativeCurrency: {
     name: 'META',
@@ -42,13 +42,13 @@ export const metadiumTestnet = {
   },
   rpcUrls: {
     default: {
-      http: ['https://rpc.test.metadium.com'],
+      http: ['https://api.metadium.com/dev'],
     },
   },
   blockExplorers: {
     default: {
       name: 'Metadium Testnet Explorer',
-      url: 'https://explorer.test.metadium.com',
+      url: 'https://testnetexplorer.metadium.com',
     },
   },
   testnet: true,
@@ -56,7 +56,7 @@ export const metadiumTestnet = {
 
 // 현재 체인 결정 (환경 변수에서 Chain ID 읽기)
 const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || 11;
-const activeChain = chainId === 511 ? metadiumTestnet : metadium;
+const activeChain = chainId === 12 ? metadiumTestnet : metadium;
 
 // WalletConnect Project ID (선택 사항)
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
@@ -80,14 +80,14 @@ const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
  * ```
  */
 export const config = createConfig({
-  chains: [metadium, metadiumTestnet],
+  chains: [metadiumTestnet, metadium],
   connectors: [
-    injected({ target: 'metaMask' }),
-    ...(projectId ? [walletConnect({ projectId, showQrModal: false })] : []),
+    injected(),
+    ...(projectId ? [walletConnect({ projectId, showQrModal: true })] : []),
   ],
   transports: {
     [metadium.id]: http(process.env.NEXT_PUBLIC_METADIUM_RPC_URL || 'https://rpc.metadium.com'),
-    [metadiumTestnet.id]: http('https://rpc.test.metadium.com'),
+    [metadiumTestnet.id]: http('https://api.metadium.com/dev'),
   },
   ssr: true,
 });

@@ -20,7 +20,8 @@ const ITEMS_PER_PAGE = 10;
  */
 export function useRoundHistory(page: number = 1) {
   const chainId = useChainId();
-  const contractAddress = getMetaLottoAddress(chainId);
+  let contractAddress: `0x${string}` | undefined;
+  try { contractAddress = getMetaLottoAddress(chainId); } catch { contractAddress = undefined; }
 
   // 현재 라운드 ID 조회
   const { data: currentRoundId, isLoading: isLoadingCurrentRound } = useReadContract({
@@ -65,7 +66,10 @@ export function useRoundHistory(page: number = 1) {
   const rounds = useMemo(() => {
     return roundsQueries.data
       ?.filter((result) => result.status === 'success' && result.result !== null)
-      .map(({ result }) => result as Round)
+      .map(({ result }) => {
+        const raw = result as (Omit<Round, 'roundId'> & { id: bigint });
+        return { ...raw, roundId: raw.id } as Round;
+      })
       .filter((round) => round.status === RoundStatus.Completed || round.status === RoundStatus.Cancelled);
   }, [roundsQueries.data]);
 

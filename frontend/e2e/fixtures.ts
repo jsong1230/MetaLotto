@@ -135,7 +135,7 @@ export const test = base.extend<{
       // 지갑 연결 해제 Mock
       mockDisconnect: () => {
         page.addInitScript(() => {
-          window.__MOCK_WALLET_DATA__ = { isConnected: false, address: '', balance: 0n };
+          window.__MOCK_WALLET_DATA__ = { isConnected: false, address: '', balance: '0' };
           window.dispatchEvent(new CustomEvent('wallet-disconnected'));
         });
       },

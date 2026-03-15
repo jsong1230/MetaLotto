@@ -19,7 +19,8 @@ const MAX_TICKETS_PER_PURCHASE = 100;
  */
 export function useTicketPurchase() {
   const chainId = useChainId();
-  const contractAddress = getMetaLottoAddress(chainId);
+  let contractAddress: `0x${string}` | undefined;
+  try { contractAddress = getMetaLottoAddress(chainId); } catch { contractAddress = undefined; }
 
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
@@ -42,6 +43,8 @@ export function useTicketPurchase() {
     }
 
     const totalValue = ticketPrice * BigInt(count);
+
+    if (!contractAddress) throw new Error('지원하지 않는 네트워크입니다.');
 
     writeContract({
       address: contractAddress,

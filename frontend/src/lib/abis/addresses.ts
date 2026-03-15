@@ -19,14 +19,14 @@ export const ADDRESSES = {
    * 메타디움 메인넷 (Chain ID: 11)
    */
   metadium: {
-    MetaLotto: '0x0000000000000000000000000000000000000000' as const, // 배포 후 업데이트
+    MetaLotto: '0x0000000000000000000000000000000000000000' as const,
   } as const,
 
   /**
-   * 메타디움 테스트넷
+   * 메타디움 테스트넷 (Chain ID: 12)
    */
   metadium_testnet: {
-    MetaLotto: '0x0000000000000000000000000000000000000000' as const, // 배포 후 업데이트
+    MetaLotto: '0x004233764dDafAc81a1C965f3ABf7D0aB95cf7BF' as const,
   } as const,
 } as const;
 
@@ -81,9 +81,8 @@ export function getContractAddress(
  * ```
  */
 export function getNetworkName(chainId: number): NetworkName | null {
-  if (chainId === 11) {
-    return 'metadium';
-  }
+  if (chainId === 11) return 'metadium';
+  if (chainId === 12) return 'metadium_testnet';
   return null;
 }
 

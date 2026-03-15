@@ -21,7 +21,8 @@ export interface RoundInfo extends Round {
  */
 export function useCurrentRound() {
   const chainId = useChainId();
-  const contractAddress = getMetaLottoAddress(chainId);
+  let contractAddress: `0x${string}` | undefined;
+  try { contractAddress = getMetaLottoAddress(chainId); } catch { contractAddress = undefined; }
 
   const { data, isLoading, error, refetch } = useReadContract({
     address: contractAddress,
@@ -29,11 +30,25 @@ export function useCurrentRound() {
     functionName: 'getCurrentRound',
     query: {
       enabled: !!contractAddress,
-      refetchInterval: 30000, // 30초마다 자동 갱신
+      refetchInterval: 30000,
     },
   });
 
-  const round = data as RoundInfo | undefined;
+  const { data: ticketPriceData } = useReadContract({
+    address: contractAddress,
+    abi: META_LOTTO_ABI,
+    functionName: 'ticketPrice',
+    query: {
+      enabled: !!contractAddress,
+      refetchInterval: 60000,
+    },
+  });
+
+  const rawRound = data as (Omit<RoundInfo, 'roundId'> & { id: bigint }) | undefined;
+  // 컨트랙트는 'id' 필드를 사용하지만 편의상 roundId로도 접근 가능하게 통일
+  const round = rawRound
+    ? { ...rawRound, roundId: rawRound.id, ticketPrice: (ticketPriceData as bigint) ?? 0n }
+    : undefined;
 
   return {
     round,
@@ -48,7 +63,8 @@ export function useCurrentRound() {
  */
 export function useRound(roundId: bigint) {
   const chainId = useChainId();
-  const contractAddress = getMetaLottoAddress(chainId);
+  let contractAddress: `0x${string}` | undefined;
+  try { contractAddress = getMetaLottoAddress(chainId); } catch { contractAddress = undefined; }
 
   const { data, isLoading, error } = useReadContract({
     address: contractAddress,

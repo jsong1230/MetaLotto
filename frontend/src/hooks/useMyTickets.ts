@@ -17,7 +17,8 @@ import { getMetaLottoAddress } from '@/lib/abis';
 export function useMyTickets(roundId?: bigint) {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
-  const contractAddress = getMetaLottoAddress(chainId);
+  let contractAddress: `0x${string}` | undefined;
+  try { contractAddress = getMetaLottoAddress(chainId); } catch { contractAddress = undefined; }
 
   const { data, isLoading, error, refetch } = useReadContract({
     address: contractAddress,
@@ -45,12 +46,13 @@ export function useMyTickets(roundId?: bigint) {
 export function usePendingWithdrawal() {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
-  const contractAddress = getMetaLottoAddress(chainId);
+  let contractAddress: `0x${string}` | undefined;
+  try { contractAddress = getMetaLottoAddress(chainId); } catch { contractAddress = undefined; }
 
   const { data, isLoading, error, refetch } = useReadContract({
     address: contractAddress,
     abi: META_LOTTO_ABI,
-    functionName: 'getPendingWithdrawal',
+    functionName: 'getPendingWithdrawals',
     args: address ? [address] : undefined,
     query: {
       enabled: isConnected && !!contractAddress && !!address,
