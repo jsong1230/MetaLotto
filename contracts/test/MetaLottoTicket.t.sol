@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity 0.8.19;
 
 import {Test, Vm} from "forge-std/Test.sol";
 import {MetaLotto} from "../src/MetaLotto.sol";
@@ -596,16 +596,24 @@ contract MetaLottoTicketTest is Test {
     // 이벤트 테스트
     // ============================================
 
+    // MetaLotto의 TicketPurchased 이벤트 정의 (테스트용)
+    event TicketPurchased(
+        uint256 indexed roundId,
+        address indexed buyer,
+        uint256 ticketCount,
+        uint256 totalCost
+    );
+
     /**
      * TicketPurchased 이벤트 발생
      */
     function test_Event_TicketPurchased() public {
         uint256 count = 5;
         uint256 totalCost = TICKET_PRICE * count;
-        uint256 currentRoundId = metalotto.getCurrentRound().roundId;
+        uint256 currentRoundId = metalotto.getCurrentRoundId();
 
         vm.expectEmit(true, true, false, true);
-        emit MetaLotto.TicketPurchased(currentRoundId, user1, count, totalCost);
+        emit TicketPurchased(currentRoundId, user1, count, totalCost);
 
         vm.prank(user1);
         metalotto.buyTickets{value: totalCost}(count);
@@ -615,18 +623,21 @@ contract MetaLottoTicketTest is Test {
      * TicketPurchased 이벤트: 여러 사용자
      */
     function test_Event_TicketPurchased_MultipleUsers() public {
-        uint256 currentRoundId = metalotto.getCurrentRound().roundId;
+        uint256 currentRoundId = metalotto.getCurrentRoundId();
 
         vm.expectEmit(true, true, false, true);
-        emit MetaLotto.TicketPurchased(currentRoundId, user1, 1, TICKET_PRICE);
+        emit TicketPurchased(currentRoundId, user1, 1, TICKET_PRICE);
         vm.prank(user1);
         metalotto.buyTickets{value: TICKET_PRICE}(1);
 
         vm.expectEmit(true, true, false, true);
-        emit MetaLotto.TicketPurchased(currentRoundId, user2, 2, TICKET_PRICE * 2);
+        emit TicketPurchased(currentRoundId, user2, 2, TICKET_PRICE * 2);
         vm.prank(user2);
         metalotto.buyTickets{value: TICKET_PRICE * 2}(2);
     }
+
+    // ConfigUpdated 이벤트 정의 (테스트용)
+    event ConfigUpdated(string paramName, uint256 oldValue, uint256 newValue);
 
     /**
      * ConfigUpdated 이벤트: ticketPrice 변경
@@ -635,7 +646,7 @@ contract MetaLottoTicketTest is Test {
         uint256 newPrice = 200 ether;
 
         vm.expectEmit(true, false, false, true);
-        emit MetaLotto.ConfigUpdated("ticketPrice", TICKET_PRICE, newPrice);
+        emit ConfigUpdated("ticketPrice", TICKET_PRICE, newPrice);
 
         vm.prank(owner);
         metalotto.setTicketPrice(newPrice);
