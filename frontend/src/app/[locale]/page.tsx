@@ -9,8 +9,11 @@ import { WinnerAnnouncementSection } from '@/components/round/WinnerAnnouncement
 import { HeroSection } from '@/components/round/HeroSection';
 import { DrawMechanismModal } from '@/components/round/DrawMechanismModal';
 import { useTranslations } from 'next-intl';
+import { useRoundEvents } from '@/hooks/useRoundEvents';
 
 export default function HomePage() {
+  useRoundEvents();
+
   return (
     <div className="min-h-screen relative" style={{ background: '#0F0F23' }}>
       {/* 배경 장식 */}

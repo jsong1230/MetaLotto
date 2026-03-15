@@ -124,8 +124,12 @@ async function tick() {
 
     log(`라운드 #${id} | 상태: ${Object.keys(RoundStatus)[status]} | 티켓: ${ticketCount} | 풀: ${totalPool / 10n**18n} META`);
 
-    // ── Open 상태이고 시간이 지났으면 closeRound 호출
+    // ── Open 상태이고 시간이 지났으면 closeRound 호출 (베팅이 있을 때만)
     if (status === RoundStatus.Open && now >= endTimestamp) {
+      if (ticketCount === 0n) {
+        log('  → 라운드 종료 시간 도달했지만 베팅 없음. closeRound 생략.');
+        return;
+      }
       log('  → 라운드 종료 시간 도달. closeRound() 호출...');
       await sendTx('closeRound');
       return; // 다음 tick에서 Closing 상태 처리

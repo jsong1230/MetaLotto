@@ -13,18 +13,25 @@
 'use client';
 
 import { useWatchContractEvent, useChainId } from 'wagmi';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, type Query } from '@tanstack/react-query';
 import { getMetalottoContract } from '@/lib/abis/config';
 
 /**
- * 쿼리 키 컨벤션
+ * wagmi useReadContract 쿼리를 functionName으로 매칭하는 헬퍼
  */
-export const QUERY_KEYS = {
-  currentRound: ['currentRound'] as const,
-  myTickets: ['myTickets'] as const,
-  history: ['history'] as const,
-  pendingWithdrawal: ['pendingWithdrawal'] as const,
-} as const;
+function byFunctionNames(...names: string[]) {
+  return {
+    predicate: (query: Query) => {
+      const key = query.queryKey[0];
+      return (
+        typeof key === 'object' &&
+        key !== null &&
+        'functionName' in key &&
+        names.includes((key as { functionName: string }).functionName)
+      );
+    },
+  };
+}
 
 /**
  * 라운드 이벤트 구독 훅
@@ -52,9 +59,7 @@ export function useRoundEvents() {
     ...contract,
     eventName: 'TicketPurchased',
     onLogs: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.currentRound });
-      // 현재 라운드 ID가 필요한 경우에는 캐시에서 조회 후 갱신
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.myTickets });
+      queryClient.invalidateQueries(byFunctionNames('getCurrentRound', 'ticketPrice', 'getMyTickets'));
     },
   });
 
@@ -63,9 +68,7 @@ export function useRoundEvents() {
     ...contract,
     eventName: 'WinnerDrawn',
     onLogs: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.currentRound });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.history });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.pendingWithdrawal });
+      queryClient.invalidateQueries(byFunctionNames('getCurrentRound', 'getRound', 'getPendingWithdrawals'));
     },
   });
 
@@ -74,7 +77,7 @@ export function useRoundEvents() {
     ...contract,
     eventName: 'RoundStarted',
     onLogs: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.currentRound });
+      queryClient.invalidateQueries(byFunctionNames('getCurrentRound', 'ticketPrice'));
     },
   });
 
@@ -83,7 +86,7 @@ export function useRoundEvents() {
     ...contract,
     eventName: 'RefundClaimed',
     onLogs: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.pendingWithdrawal });
+      queryClient.invalidateQueries(byFunctionNames('getPendingWithdrawals'));
     },
   });
 
@@ -92,7 +95,7 @@ export function useRoundEvents() {
     ...contract,
     eventName: 'WithdrawalClaimed',
     onLogs: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.pendingWithdrawal });
+      queryClient.invalidateQueries(byFunctionNames('getPendingWithdrawals'));
     },
   });
 }

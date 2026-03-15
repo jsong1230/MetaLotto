@@ -233,31 +233,47 @@ event PrizeDistributed(
 ### 6.1 wagmi/viem 예시
 
 ```typescript
-// 현재 라운드 티켓 구매 이벤트
+// useRoundEvents 훅 (메인 페이지에서 1회 호출)
+// wagmi의 useReadContract는 자체 쿼리 키 포맷을 사용하므로
+// invalidateQueries 시 functionName 기반 predicate로 매칭해야 함
+
+function byFunctionNames(...names: string[]) {
+  return {
+    predicate: (query: Query) => {
+      const key = query.queryKey[0];
+      return (
+        typeof key === 'object' && key !== null &&
+        'functionName' in key &&
+        names.includes(key.functionName)
+      );
+    },
+  };
+}
+
+// 티켓 구매 이벤트
 useWatchContractEvent({
-  address: CONTRACT_ADDRESS,
-  abi: MetaLottoABI,
+  ...contract,
   eventName: 'TicketPurchased',
-  args: { roundId: currentRoundId },
-  onLogs: (logs) => {
-    // UI 갱신
-    queryClient.invalidateQueries({ queryKey: ['currentRound'] });
+  onLogs: () => {
+    queryClient.invalidateQueries(
+      byFunctionNames('getCurrentRound', 'ticketPrice', 'getMyTickets')
+    );
   },
 });
 
 // 당첨자 발표 이벤트
 useWatchContractEvent({
-  address: CONTRACT_ADDRESS,
-  abi: MetaLottoABI,
+  ...contract,
   eventName: 'WinnerDrawn',
-  onLogs: (logs) => {
-    // 당첨 알림 표시
-    const { winner, winnerPrize } = logs[0].args;
-    if (winner === userAddress) {
-      showWinNotification(winnerPrize);
-    }
+  onLogs: () => {
+    queryClient.invalidateQueries(
+      byFunctionNames('getCurrentRound', 'getRound', 'getPendingWithdrawals')
+    );
   },
 });
+
+// 본인 구매 시에는 TicketPurchaseSection에서
+// isSuccess 감지 후 refetch()를 직접 호출하여 즉시 반영
 ```
 
 ### 6.2 The Graph 인덱싱 (선택)
@@ -317,3 +333,4 @@ event TicketPurchased(
 | 날짜 | 변경 내용 | 이유 |
 |------|----------|------|
 | 2026-03-13 | 초기 작성 | M1 마일스톤 시작 |
+| 2026-03-15 | 이벤트 구독 코드 업데이트: wagmi 쿼리 키 매칭을 functionName predicate 방식으로 변경, 본인 구매 시 직접 refetch 패턴 추가 | invalidateQueries가 wagmi useReadContract 쿼리 키와 매칭되지 않던 버그 수정 |

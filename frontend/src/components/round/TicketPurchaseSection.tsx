@@ -13,8 +13,8 @@ import { Minus, Plus, Ticket, Loader2, CheckCircle2, AlertCircle } from 'lucide-
 
 export function TicketPurchaseSection() {
   const { isConnected } = useAccount();
-  const { round } = useCurrentRound();
-  const { ticketCount: myTickets } = useMyTickets(round?.roundId);
+  const { round, refetch: refetchRound } = useCurrentRound();
+  const { ticketCount: myTickets, refetch: refetchMyTickets } = useMyTickets(round?.roundId);
   const { buyTickets, calculateTotalPrice, isPending, isConfirming, isSuccess, error: txError } = useTicketPurchase();
   const { isExpired } = useCountdown(round?.endTimestamp ?? 0n);
   const t = useTranslations('ticketPurchase');
@@ -30,13 +30,16 @@ export function TicketPurchaseSection() {
 
   useEffect(() => {
     if (isSuccess) {
+      // 트랜잭션 성공 시 즉시 데이터 갱신
+      refetchRound();
+      refetchMyTickets();
       const timer = setTimeout(() => {
         setQuantity(1);
         setError(null);
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [isSuccess]);
+  }, [isSuccess, refetchRound, refetchMyTickets]);
 
   const handleQuantityChange = (value: number) => {
     setQuantity(Math.max(1, Math.min(100, value)));

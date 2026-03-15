@@ -18,10 +18,10 @@
 
 ## 데이터 소스
 - `useAccount`: 지갑 연결 상태
-- `useReadContract`: 현재 라운드 정보 (`getCurrentRound`)
-- `useWriteContract`: 티켓 구매 트랜잭션 전송
-- `useWaitForTransactionReceipt`: 트랜잭션 컨펌 대기
-- `useChainId`: 현재 체인 ID
+- `useCurrentRound`: 현재 라운드 정보 조회 (refetch 포함)
+- `useMyTickets`: 현재 라운드 내 티켓 수 조회 (refetch 포함)
+- `useTicketPurchase`: 티켓 구매 트랜잭션 전송 및 상태 관리
+- `useCountdown`: 라운드 종료 카운트다운
 
 ## 기능
 
@@ -104,6 +104,10 @@ export function HomePage() {
 - @/lib/abis (`MetaLottoAbi`, `getMetaLottoAddress`)
 - @/lib/utils (`formatEther`)
 - @/types (`RoundInfo`)
+
+## 실시간 데이터 갱신
+- 트랜잭션 성공(`isSuccess`) 시 `useCurrentRound`와 `useMyTickets`의 `refetch()`를 직접 호출하여 즉시 UI 반영
+- `useRoundEvents` 훅이 메인 페이지에서 컨트랙트 이벤트를 구독하여 다른 사용자의 구매/당첨도 실시간 갱신
 
 ## 참고
 - 이 컴포넌트는 `'use client'` 지시어를 사용하여 클라이언트 컴포넌트로 작동합니다.

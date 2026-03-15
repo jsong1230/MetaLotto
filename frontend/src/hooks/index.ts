@@ -19,7 +19,7 @@ export {
 } from './useRoundHistory';
 
 // 이벤트 관련
-export { useRoundEvents, QUERY_KEYS } from './useRoundEvents';
+export { useRoundEvents } from './useRoundEvents';
 
 // 유틸리티
 export { useCountdown, getCountdownMessage } from './useCountdown';
