@@ -4,28 +4,92 @@ import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { WalletConnectButton } from '@/components/wallet/WalletConnectButton';
 import { LocaleSwitcher } from '@/components/layout/LocaleSwitcher';
-import { Sparkles } from 'lucide-react';
 
 export function Header() {
   const t = useTranslations('nav');
   const locale = useLocale();
 
   return (
-    <header className="sticky top-0 z-50 border-b" style={{ borderColor: 'rgba(255,255,255,0.1)', background: 'rgba(15,15,35,0.85)', backdropFilter: 'blur(20px)' }}>
+    <header
+      className="sticky top-0 z-50"
+      style={{
+        background: 'rgba(0, 0, 0, 0.85)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(240, 240, 250, 0.1)',
+      }}
+    >
       <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href={`/${locale}`} className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #00D9FF 0%, #7C3AED 100%)' }}>
-            <Sparkles className="w-4 h-4 text-white" />
-          </div>
-          <span className="font-black text-xl tracking-tight">
-            <span style={{ background: 'linear-gradient(135deg, #00D9FF 0%, #7C3AED 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>META</span>
-            <span className="text-white">LOTTO</span>
+        <Link href={`/${locale}`} className="flex items-center gap-3">
+          <span
+            style={{
+              fontFamily: "'Barlow Condensed', Arial, sans-serif",
+              fontWeight: 700,
+              fontSize: '1.5rem',
+              letterSpacing: '0.15em',
+              color: '#f0f0fa',
+              textTransform: 'uppercase',
+            }}
+          >
+            METALOTTO
           </span>
         </Link>
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>
-          <Link href={`/${locale}`} className="hover:text-white transition-colors">{t('home')}</Link>
-          <Link href={`/${locale}/history`} className="hover:text-white transition-colors">{t('history')}</Link>
+
+        <nav
+          className="hidden md:flex items-center gap-8"
+          style={{ color: 'rgba(240, 240, 250, 0.6)' }}
+        >
+          <Link
+            href={`/${locale}`}
+            style={{
+              fontFamily: "'Barlow Condensed', Arial, sans-serif",
+              fontWeight: 700,
+              fontSize: '0.81rem',
+              letterSpacing: '1.17px',
+              textTransform: 'uppercase',
+              color: 'rgba(240, 240, 250, 0.6)',
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#f0f0fa'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(240, 240, 250, 0.6)'; }}
+          >
+            {t('home')}
+          </Link>
+          <Link
+            href={`/${locale}/history`}
+            style={{
+              fontFamily: "'Barlow Condensed', Arial, sans-serif",
+              fontWeight: 700,
+              fontSize: '0.81rem',
+              letterSpacing: '1.17px',
+              textTransform: 'uppercase',
+              color: 'rgba(240, 240, 250, 0.6)',
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#f0f0fa'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(240, 240, 250, 0.6)'; }}
+          >
+            {t('history')}
+          </Link>
+          <a
+            href="/manual.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "'Barlow Condensed', Arial, sans-serif",
+              fontWeight: 700,
+              fontSize: '0.81rem',
+              letterSpacing: '1.17px',
+              textTransform: 'uppercase',
+              color: 'rgba(240, 240, 250, 0.6)',
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#f0f0fa'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(240, 240, 250, 0.6)'; }}
+          >
+            Manual
+          </a>
         </nav>
+
         <div className="flex items-center gap-3">
           <LocaleSwitcher />
           <WalletConnectButton />

@@ -5,6 +5,16 @@ import { useTranslations } from 'next-intl';
 import { formatEther } from 'viem';
 import { RoundStatus } from '@/lib/abis/types';
 
+const label: React.CSSProperties = {
+  fontFamily: "'Barlow Condensed', Arial, sans-serif",
+  fontWeight: 700,
+  fontSize: '0.63rem',
+  letterSpacing: '1px',
+  textTransform: 'uppercase',
+  lineHeight: 0.94,
+  color: 'rgba(240, 240, 250, 0.6)',
+};
+
 export function HeroSection() {
   const { round, isLoading } = useCurrentRound();
   const t = useTranslations('hero');
@@ -13,36 +23,86 @@ export function HeroSection() {
   const isOpen = round?.status === RoundStatus.Open;
 
   return (
-    <div className="text-center py-12 animate-fade-in-up">
+    <div className="text-center py-16 animate-fade-in-up">
+      {/* Status label */}
       <div
-        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs font-black uppercase tracking-widest"
-        style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.8)' }}
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '8px 18px',
+          borderRadius: '32px',
+          border: '1px solid rgba(240, 240, 250, 0.35)',
+          background: 'rgba(240, 240, 250, 0.1)',
+          marginBottom: '2rem',
+          ...label,
+        }}
       >
-        <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: isOpen ? '#22C55E' : '#EAB308' }} />
+        <span
+          style={{
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: isOpen ? '#f0f0fa' : 'rgba(240, 240, 250, 0.35)',
+            display: 'inline-block',
+          }}
+        />
         {isOpen ? t('roundInProgress') : t('waitingDraw')}
       </div>
 
-      <h1
-        className="text-5xl sm:text-7xl font-black mb-2 leading-none tracking-tight"
-        style={{ color: 'rgba(255,255,255,0.5)', letterSpacing: '-0.03em' }}
+      {/* Jackpot label */}
+      <p
+        style={{
+          fontFamily: "'Barlow Condensed', Arial, sans-serif",
+          fontWeight: 700,
+          fontSize: '0.81rem',
+          letterSpacing: '1.17px',
+          textTransform: 'uppercase',
+          color: 'rgba(240, 240, 250, 0.35)',
+          marginBottom: '0.5rem',
+          lineHeight: 0.94,
+        }}
       >
         {t('jackpot')}
-      </h1>
+      </p>
 
+      {/* Amount */}
       <div
-        className="text-6xl sm:text-8xl font-black leading-none mb-4"
-        style={{ background: 'linear-gradient(135deg, #EAB308 0%, #00D9FF 50%, #7C3AED 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-0.03em' }}
+        style={{
+          fontFamily: "'Barlow Condensed', Arial, sans-serif",
+          fontWeight: 700,
+          fontSize: 'clamp(4rem, 12vw, 8rem)',
+          lineHeight: 1,
+          letterSpacing: '0.96px',
+          textTransform: 'uppercase',
+          color: '#f0f0fa',
+          marginBottom: '0.5rem',
+        }}
       >
-        {isLoading ? '...' : poolAmount}
+        {isLoading ? '—' : poolAmount}
         <span
-          className="text-3xl sm:text-5xl ml-2"
-          style={{ background: 'linear-gradient(135deg, #EAB308 0%, #00D9FF 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+          style={{
+            fontSize: 'clamp(1.5rem, 4vw, 3rem)',
+            color: 'rgba(240, 240, 250, 0.6)',
+            marginLeft: '0.5rem',
+          }}
         >
           {t('meta')}
         </span>
       </div>
 
-      <p className="text-base sm:text-lg" style={{ color: 'rgba(255,255,255,0.5)' }}>
+      {/* Round label */}
+      <p
+        style={{
+          fontFamily: "'Barlow Condensed', Arial, sans-serif",
+          fontWeight: 400,
+          fontSize: '0.75rem',
+          letterSpacing: '1px',
+          textTransform: 'uppercase',
+          color: 'rgba(240, 240, 250, 0.35)',
+          lineHeight: 1,
+        }}
+      >
         {t('roundLabel', { roundId: round?.roundId?.toString() ?? '1' })}
       </p>
     </div>

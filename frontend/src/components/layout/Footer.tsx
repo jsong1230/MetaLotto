@@ -1,29 +1,54 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Sparkles } from 'lucide-react';
+
+const micro: React.CSSProperties = {
+  fontFamily: "'Barlow Condensed', Arial, sans-serif",
+  fontWeight: 400,
+  fontSize: '0.63rem',
+  letterSpacing: '1px',
+  textTransform: 'uppercase',
+  color: 'rgba(240, 240, 250, 0.35)',
+  lineHeight: 0.94,
+};
 
 export function Footer() {
   const t = useTranslations('footer');
 
   return (
-    <footer className="mt-20 border-t" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+    <footer
+      style={{
+        marginTop: '5rem',
+        borderTop: '1px solid rgba(240, 240, 250, 0.08)',
+      }}
+    >
       <div className="container mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #00D9FF 0%, #7C3AED 100%)' }}>
-            <Sparkles className="w-3 h-3 text-white" />
-          </div>
-          <span className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.4)' }}>MetaLotto</span>
-        </div>
-        <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
-          Powered by Metadium Blockchain • {t('description')}
-        </p>
+        <span
+          style={{
+            fontFamily: "'Barlow Condensed', Arial, sans-serif",
+            fontWeight: 700,
+            fontSize: '0.81rem',
+            letterSpacing: '1.17px',
+            textTransform: 'uppercase',
+            color: 'rgba(240, 240, 250, 0.35)',
+          }}
+        >
+          METALOTTO
+        </span>
+
+        <p style={micro}>Powered by Metadium Blockchain — {t('description')}</p>
+
         <a
           href="https://testnetexplorer.metadium.com/address/0x004233764dDafAc81a1C965f3ABf7D0aB95cf7BF"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs font-medium transition-colors hover:text-white"
-          style={{ color: '#00D9FF' }}
+          style={{
+            ...micro,
+            color: 'rgba(240, 240, 250, 0.6)',
+            transition: 'color 0.2s',
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#f0f0fa'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(240, 240, 250, 0.6)'; }}
         >
           {t('viewOnExplorer')}
         </a>

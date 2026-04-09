@@ -3,6 +3,8 @@ import type { NextConfig } from 'next';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  allowedDevOrigins: ['100.78.129.4'],
+};
 
 export default withNextIntl(nextConfig);

@@ -1,40 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-primary: #0F0F23;
-  --color-bg-card: rgba(255, 255, 255, 0.08);
-  --color-accent-cyan: #00D9FF;
-  --color-accent-purple: #7C3AED;
-  --color-accent-yellow: #EAB308;
-  --color-accent-red: #FF6B6B;
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: rgba(255, 255, 255, 0.7);
-  --color-text-tertiary: rgba(255, 255, 255, 0.5);
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --radius-card: 24px;
-  --radius-btn: 16px;
+  --color-bg-primary: #000000;
+  --color-text-primary: #f0f0fa;
+  --color-text-secondary: rgba(240, 240, 250, 0.6);
+  --color-text-muted: rgba(240, 240, 250, 0.35);
+  --color-ghost-bg: rgba(240, 240, 250, 0.1);
+  --color-ghost-border: rgba(240, 240, 250, 0.35);
+  --color-ghost-hover: rgba(240, 240, 250, 0.15);
+  --font-sans: 'Barlow Condensed', 'Arial', 'Verdana', sans-serif;
+  --radius-card: 4px;
+  --radius-btn: 32px;
 }
 
 body {
-  background: #0F0F23;
-  color: #FFFFFF;
-  font-family: 'Inter', system-ui, sans-serif;
-}
-
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(0, 217, 255, 0.4); }
-  50% { box-shadow: 0 0 50px rgba(0, 217, 255, 0.8), 0 0 80px rgba(124, 58, 237, 0.4); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  background: #000000;
+  color: #f0f0fa;
+  font-family: 'Barlow Condensed', 'Arial', 'Verdana', sans-serif;
+  letter-spacing: 0.02em;
 }
 
 @keyframes fadeInUp {
@@ -42,6 +25,4 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-pulse-glow { animation: pulseGlow 2.5s ease-in-out infinite; }
-.animate-float { animation: float 3s ease-in-out infinite; }
 .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
