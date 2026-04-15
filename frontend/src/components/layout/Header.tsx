@@ -71,7 +71,7 @@ export function Header() {
             {t('history')}
           </Link>
           <Link
-            href="/manual.html"
+            href={`/${locale}/manual`}
             style={{
               fontFamily: "'Barlow Condensed', Arial, sans-serif",
               fontWeight: 700,
