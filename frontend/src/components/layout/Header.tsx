@@ -70,10 +70,8 @@ export function Header() {
           >
             {t('history')}
           </Link>
-          <a
+          <Link
             href="/manual.html"
-            target="_blank"
-            rel="noopener noreferrer"
             style={{
               fontFamily: "'Barlow Condensed', Arial, sans-serif",
               fontWeight: 700,
@@ -87,7 +85,7 @@ export function Header() {
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(240, 240, 250, 0.6)'; }}
           >
             Manual
-          </a>
+          </Link>
         </nav>
 
         <div className="flex items-center gap-3">
