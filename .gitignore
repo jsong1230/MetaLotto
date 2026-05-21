@@ -62,3 +62,4 @@ test-results/
 !**/contracts/test/*.t.sol
 !**/contracts/src/*.sol
 !**/contracts/foundry.toml
+ecosystem.config.cjs
