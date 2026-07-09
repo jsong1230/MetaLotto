@@ -59,7 +59,12 @@ test-results/
 *.git
 **/contracts/.git
 **/contracts/**
-!**/contracts/test/*.t.sol
+# 하위 파일 재포함이 동작하려면 부모 디렉토리부터 재포함해야 함 (git ignore 함정)
+!**/contracts/src/
 !**/contracts/src/*.sol
+!**/contracts/test/
+!**/contracts/test/*.t.sol
+!**/contracts/script/
+!**/contracts/script/*.s.sol
 !**/contracts/foundry.toml
 ecosystem.config.cjs
